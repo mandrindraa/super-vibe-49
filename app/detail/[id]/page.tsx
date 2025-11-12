@@ -2,6 +2,9 @@ import { ChevronLeft, Leaf, User, Clock, Tag, Share2 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import VotingSystem from "@/app/components/voting-system"
+import CommentsSection from "@/app/components/comments-section"
+import ReactionsBar from "@/app/components/reactions-bar"
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -181,6 +184,17 @@ export default async function DetailPage({ params }: PageProps) {
                 </Link>
               ))}
             </div>
+
+            {/* Voting System */}
+            <div className="pt-6 border-t border-border">
+              <VotingSystem knowledgeId={savoir.id} initialVotes={45} />
+            </div>
+
+            {/* Reactions Bar */}
+            <ReactionsBar />
+
+            {/* Comments Section */}
+            <CommentsSection knowledgeId={savoir.id} />
 
             {/* Share */}
             <div className="pt-6 border-t border-border flex gap-3">

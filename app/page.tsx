@@ -77,6 +77,7 @@ const recentSavoirs: Savoir[] = [
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const [showIntroAnimation, setShowIntroAnimation] = useState(true) // add intro animation state
 
   useEffect(() => {
     setIsLoaded(true)
@@ -85,6 +86,12 @@ export default function Home() {
     if (isDarkMode) {
       document.documentElement.classList.add("dark")
     }
+
+    const timer = setTimeout(() => {
+      setShowIntroAnimation(false)
+    }, 3000)
+
+    return () => clearTimeout(timer)
   }, [])
 
   const toggleDarkMode = () => {
@@ -98,6 +105,24 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      {showIntroAnimation && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-background dark:bg-slate-950 overflow-hidden">
+          <div className="relative w-full h-full flex items-center justify-center">
+            {/* Growing seed animation */}
+            <div className="absolute">
+              <div className="animate-intro-seed text-6xl">🌱</div>
+            </div>
+            {/* Parchment scroll appearing */}
+            <div className="absolute animate-intro-scroll text-4xl opacity-0">📜</div>
+            {/* Fade out text */}
+            <div className="text-center space-y-4 animate-intro-text-fade">
+              <h2 className="text-4xl md:text-5xl font-bold gradient-text">Cultiver Demain</h2>
+              <p className="text-lg text-foreground/70">Préservons la mémoire pour cultiver demain.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header
         className={`sticky top-0 z-50 glass dark:bg-white/5 dark:border-white/10 shadow-sm transition-all duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
       >
@@ -322,7 +347,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div
-              className={`glass dark:bg-white/8 dark:border-white/10 rounded-lg p-8 md:p-10 shadow-sm hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 ${isLoaded ? "slide-in-left" : "opacity-0"}`}
+              className={`glass dark:bg-white/8 dark:border-white/15 rounded-lg p-8 md:p-10 shadow-sm hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 ${isLoaded ? "slide-in-left" : "opacity-0"}`}
             >
               <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">Partagez Vos Savoirs</h3>
               <p className="text-foreground/70 mb-8">
@@ -358,7 +383,7 @@ export default function Home() {
             </div>
 
             <div className={`relative h-80 md:h-96 ${isLoaded ? "slide-in-right" : "opacity-0"}`}>
-              <div className="absolute inset-0 glass dark:bg-white/8 dark:border-white/10 rounded-2xl overflow-hidden flex items-center justify-center shadow-xl glow-pulse hover:shadow-2xl hover:glow-pulse-active transition-all duration-300 group">
+              <div className="absolute inset-0 glass dark:bg-white/8 dark:border-white/15 rounded-2xl overflow-hidden flex items-center justify-center shadow-xl glow-pulse hover:shadow-2xl hover:glow-pulse-active transition-all duration-300 group">
                 <img
                   src="/traditional-fabric-dyeing-natural-colors.jpg?height=384&width=448"
                   alt="Teinture naturelle"

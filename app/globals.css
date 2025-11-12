@@ -341,6 +341,94 @@
     animation-delay: 0.6s;
   }
 
+  @keyframes draw-path {
+    0% {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .animate-draw-path {
+    animation: draw-path 2s ease-out forwards;
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 1s ease-out forwards;
+    animation-delay: 0.5s;
+  }
+
+  /* Add immersive intro animations */
+  @keyframes intro-seed-grow {
+    0% {
+      transform: scale(0) rotate(0deg);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2) rotate(5deg);
+    }
+    100% {
+      transform: scale(0.1) translateY(-200px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .animate-intro-seed {
+    animation: intro-seed-grow 3s ease-out forwards;
+  }
+
+  @keyframes intro-scroll-appear {
+    0% {
+      opacity: 0;
+      transform: scale(0) rotate(-180deg);
+    }
+    50% {
+      opacity: 0;
+    }
+    70% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg) translateY(100px);
+    }
+  }
+
+  .animate-intro-scroll {
+    animation: intro-scroll-appear 3s ease-out forwards;
+  }
+
+  @keyframes intro-text-fade {
+    0% {
+      opacity: 1;
+      transform: scale(0.8);
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+  }
+
+  .animate-intro-text-fade {
+    animation: intro-text-fade 3s ease-out forwards;
+  }
+
   html {
     cursor: auto;
   }
