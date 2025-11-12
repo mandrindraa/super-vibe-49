@@ -197,6 +197,31 @@
     animation: parallax-slow 6s ease-in-out infinite;
   }
 
+  /* Parallax helper: keep transform on GPU compositing layer */
+  .parallax-on-scroll {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Hero image styles for stacked parallax */
+  .hero-image {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: filter 0.3s ease;
+  }
+
+  .hero-image:hover {
+    filter: brightness(1.1);
+  }
+
+  .hero-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
   @keyframes glow-pulse {
     0%,
     100% {
@@ -370,63 +395,24 @@
     animation-delay: 0.5s;
   }
 
-  /* Add immersive intro animations */
-  @keyframes intro-seed-grow {
-    0% {
-      transform: scale(0) rotate(0deg);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.2) rotate(5deg);
-    }
-    100% {
-      transform: scale(0.1) translateY(-200px) rotate(360deg);
-      opacity: 0;
-    }
-  }
-
-  .animate-intro-seed {
-    animation: intro-seed-grow 3s ease-out forwards;
-  }
-
-  @keyframes intro-scroll-appear {
+  /* Intro overlay fade animation (used with TreeBackground overlay) */
+  @keyframes intro-overlay-fade {
     0% {
       opacity: 0;
-      transform: scale(0) rotate(-180deg);
+      transform: translateY(8px) scale(0.98);
     }
-    50% {
-      opacity: 0;
-    }
-    70% {
+    30% {
       opacity: 1;
-      transform: scale(1) rotate(0deg);
+      transform: translateY(0) scale(1);
     }
     100% {
       opacity: 1;
-      transform: scale(1) rotate(0deg) translateY(100px);
-    }
-  }
-
-  .animate-intro-scroll {
-    animation: intro-scroll-appear 3s ease-out forwards;
-  }
-
-  @keyframes intro-text-fade {
-    0% {
-      opacity: 1;
-      transform: scale(0.8);
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1.1);
+      transform: translateY(0) scale(1);
     }
   }
 
   .animate-intro-text-fade {
-    animation: intro-text-fade 3s ease-out forwards;
+    animation: intro-overlay-fade 1s ease-out forwards;
   }
 
   html {

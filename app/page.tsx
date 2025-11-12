@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, Leaf, Moon, Plus, Search, Sun } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import TreeBackground from "./components/tree-background";
 
 interface Savoir {
   id: string;
@@ -94,12 +95,55 @@ export default function Home() {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
     }
-
-    const timer = setTimeout(() => {
+    // Check persisted preference for skipping intro
+    const skipIntro = window.localStorage?.getItem("skipIntro") === "true";
+    if (skipIntro) {
       setShowIntroAnimation(false);
-    }, 3000);
+    }
 
-    return () => clearTimeout(timer);
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    if (!skipIntro) {
+      timer = setTimeout(() => {
+        setShowIntroAnimation(false);
+      }, 4000);
+    }
+
+    // parallax on scroll using requestAnimationFrame and element position
+    // Elements should have class .parallax-on-scroll and a data-depth value (0..1)
+    let rafId = 0;
+
+    const updateParallax = () => {
+      const nodes = document.querySelectorAll<HTMLElement>(
+        ".parallax-on-scroll"
+      );
+      const vh = window.innerHeight;
+      nodes.forEach((el) => {
+        const depth = parseFloat(el.dataset.depth || el.dataset.speed || "0.2");
+        const rect = el.getBoundingClientRect();
+        // distance from element center to viewport center
+        const elCenter = rect.top + rect.height / 2;
+        const viewCenter = vh / 2;
+        const offset = elCenter - viewCenter;
+        // translate proportional to offset and depth (invert for natural parallax)
+        const translateY = -offset * depth;
+        el.style.transform = `translate3d(0, ${translateY}px, 0)`;
+      });
+      rafId = 0;
+    };
+
+    const onScroll = () => {
+      if (!rafId) rafId = requestAnimationFrame(updateParallax);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // initial position
+    updateParallax();
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const toggleDarkMode = () => {
@@ -115,21 +159,33 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {showIntroAnimation && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-background dark:bg-slate-950 overflow-hidden">
-          <div className="relative w-full h-full flex items-center justify-center">
-            {/* Growing seed animation */}
-            <div className="absolute">
-              <div className="animate-intro-seed text-6xl">🌱</div>
+          {/* 3D growing tree background (Canvas) */}
+          <TreeBackground />
+
+          {/* Intro text overlay */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            {/* Skip intro button */}
+            <div className="absolute top-4 right-4 z-30 pointer-events-auto">
+              <button
+                className="px-3 py-1 rounded-md glass text-sm"
+                onClick={() => {
+                  setShowIntroAnimation(false);
+                  try {
+                    window.localStorage.setItem("skipIntro", "true");
+                  } catch (_) {
+                    /* ignore */
+                  }
+                }}
+              >
+                Passer l'intro
+              </button>
             </div>
-            {/* Parchment scroll appearing */}
-            <div className="absolute animate-intro-scroll text-4xl opacity-0">
-              📜
-            </div>
-            {/* Fade out text */}
-            <div className="text-center space-y-4 animate-intro-text-fade">
+
+            <div className="text-center space-y-4 animate-intro-text-fade z-10">
               <h2 className="text-4xl md:text-5xl font-bold gradient-text">
                 Cultiver Demain
               </h2>
-              <p className="text-lg text-foreground/70">
+              <p className="text-lg text-foreground dark:text-white">
                 Préservons la mémoire pour cultiver demain.
               </p>
             </div>
@@ -186,7 +242,11 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5 dark:from-primary/5 dark:via-background dark:to-accent/5 py-16 md:py-32 min-h-screen flex items-center">
+      <section
+        className={`relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5 dark:from-primary/5 dark:via-background dark:to-accent/5 py-16 md:py-32 min-h-screen flex items-center ${
+          isLoaded ? "animate-fade-in" : "opacity-0"
+        }`}
+      >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-accent/10 dark:bg-accent/20 rounded-full blur-3xl parallax-slow"></div>
           <div
@@ -227,7 +287,7 @@ export default function Home() {
                   </span>
                 </h2>
                 <p
-                  className="text-lg md:text-xl text-foreground/70 leading-relaxed max-w-xl fade-scale-in"
+                  className="text-lg md:text-xl text-foreground leading-relaxed max-w-xl fade-scale-in"
                   style={{ animationDelay: "0.4s" }}
                 >
                   Découvrez les savoirs oubliés de nos ancêtres et participez à
@@ -258,39 +318,54 @@ export default function Home() {
             </div>
 
             <div
-              className={`relative h-96 md:h-full md:min-h-96 ${
+              className={`relative h-96 md:h-full md:min-h-96 flex items-center justify-center ${
                 isLoaded ? "slide-in-right" : "opacity-0"
               }`}
             >
-              <div
-                className="absolute top-0 right-0 w-72 h-80 glass dark:bg-white/8 dark:border-white/15 rounded-2xl overflow-hidden hero-floating shadow-2xl glow-pulse hover:shadow-2xl hover:glow-pulse-active transition-all duration-300 group cursor-pointer"
-                style={{ animationDelay: "0.3s" }}
-              >
-                <img
-                  src="/ancient-farming-techniques-wheat-field.jpg?height=320&width=288"
-                  alt="Techniques de semis ancestrales"
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-500 group-hover:brightness-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                  <p className="text-white/90 text-sm font-medium">
-                    Techniques Ancestrales
-                  </p>
+              {/* Hero images with perspective and slight rotation for depth */}
+              <div className="relative w-[500px] h-[400px] pointer-events-auto perspective">
+                {/* First image: slightly rotated left and offset up-left */}
+                <div
+                  className="absolute rounded-2xl overflow-hidden glass hero-image parallax-on-scroll shadow-2xl"
+                  data-depth="0.12"
+                  style={{
+                    mixBlendMode: "multiply",
+                    opacity: 0.98,
+                    width: "380px",
+                    height: "320px",
+                    left: "-20px",
+                    top: "-30px",
+                    transform:
+                      "perspective(1200px) rotateY(-8deg) rotateX(4deg) translateZ(0px)",
+                  }}
+                >
+                  <img
+                    src="/ancient-farming-techniques-wheat-field.jpg?height=360&width=420"
+                    alt="Techniques de semis ancestrales"
+                    className="w-full h-full object-cover pointer-events-none"
+                  />
                 </div>
-              </div>
 
-              <div
-                className="absolute bottom-8 left-8 w-56 h-64 glass dark:bg-white/8 dark:border-white/15 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group cursor-pointer hero-floating glow-pulse"
-                style={{ animationDelay: "0.5s" }}
-              >
-                <img
-                  src="/herbal-medicine-plants-garden.jpg?height=256&width=224"
-                  alt="Médecine des plantes"
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-500 group-hover:brightness-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                  <p className="text-white/90 text-sm font-medium">
-                    Savoirs Naturels
-                  </p>
+                {/* Second image: slightly rotated right and offset down-right */}
+                <div
+                  className="absolute rounded-2xl overflow-hidden glass hero-image parallax-on-scroll shadow-2xl"
+                  data-depth="0.28"
+                  style={{
+                    mixBlendMode: "screen",
+                    opacity: 0.95,
+                    width: "380px",
+                    height: "320px",
+                    right: "-20px",
+                    bottom: "-30px",
+                    transform:
+                      "perspective(1200px) rotateY(8deg) rotateX(-4deg) translateZ(20px)",
+                  }}
+                >
+                  <img
+                    src="/herbal-medicine-plants-garden.jpg?height=360&width=420"
+                    alt="Médecine des plantes"
+                    className="w-full h-full object-cover pointer-events-none"
+                  />
                 </div>
               </div>
 
@@ -314,7 +389,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2">
               Zone d'Exploration
             </h2>
-            <p className="text-foreground/70">
+            <p className="text-foreground">
               Parcourez notre collection de savoirs ancestraux
             </p>
           </div>
@@ -359,10 +434,10 @@ export default function Home() {
                     <h3 className="font-semibold text-foreground text-lg line-clamp-2">
                       {savoir.title}
                     </h3>
-                    <p className="text-foreground/70 text-sm line-clamp-2">
+                    <p className="text-foreground text-sm line-clamp-2">
                       {savoir.excerpt}
                     </p>
-                    <div className="text-xs text-muted-foreground pt-2">
+                    <div className="text-xs text-foreground pt-2">
                       Par {savoir.contributor}
                     </div>
                   </div>
@@ -384,7 +459,7 @@ export default function Home() {
             <h3 className="text-2xl md:text-3xl font-bold text-primary mb-3">
               Arbre des Savoirs Interactif
             </h3>
-            <p className="text-foreground/70 mb-6 max-w-2xl mx-auto">
+            <p className="text-foreground mb-6 max-w-2xl mx-auto">
               Explorez une représentation visuelle de tous les savoirs connectés
               entre eux. Découvrez les liens historiques et thématiques qui les
               unissent.
@@ -415,7 +490,7 @@ export default function Home() {
               <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">
                 Partagez Vos Savoirs
               </h3>
-              <p className="text-foreground/70 mb-8">
+              <p className="text-foreground mb-8">
                 Avez-vous des connaissances, techniques ou traditions à
                 transmettre ? Contribuez à L'Arche des Savoirs en partageant vos
                 découvertes.
@@ -451,7 +526,7 @@ export default function Home() {
                       <p className="font-semibold text-foreground">
                         {step.title}
                       </p>
-                      <p className="text-sm text-foreground/70">{step.desc}</p>
+                      <p className="text-sm text-foreground">{step.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -583,8 +658,10 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-primary-foreground/20 dark:border-white/10 pt-8 text-center text-sm">
-          <p>© 2025 L'Arche des Savoirs. Hackathon "Cultiver Demain"</p>
+        <div className="border-t border-primary-foreground/20 dark:border-white/10 pt-4 text-center text-xs">
+          <p className="text-primary-foreground dark:text-white">
+            © 2025 L'Arche des Savoirs. Hackathon "Cultiver Demain"
+          </p>
         </div>
       </footer>
     </div>
