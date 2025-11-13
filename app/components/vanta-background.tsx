@@ -35,8 +35,8 @@ export function VantaBackground() {
         gyroControls: false,
         minHeight: 200.0,
         minWidth: 200.0,
-        scale: 0.3,
-        scaleMobile: 1.0,
+        scale: 1,
+        scaleMobile: 1,
         color: glColor,
         backgroundColor: backgroundColor,
       });
