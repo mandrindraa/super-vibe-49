@@ -1,7 +1,30 @@
-import createServerClient from "@/lib/supabase/client";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { createServerClient } from "@/lib/supabase/client";
+import NextAuth, { NextAuthOptions, Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+
+declare module "next-auth" {
+  interface User {
+    id: string;
+    email: string;
+    name: string | null;
+    image: string | null;
+    username: string | null;
+  }
+
+  interface Session {
+    user?: User;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    username: string | null;
+    reputation?: number;
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -9,6 +32,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
 
     // Email/Password Provider (via Supabase)
@@ -32,25 +56,27 @@ export const authOptions: NextAuthOptions = {
             password: credentials.password,
           });
 
-          if (error) {
-            throw new Error(error.message);
-          }
-
-          if (!data.user) {
-            throw new Error("Utilisateur non trouvé");
+          if (error || !data.user) {
+            console.error("Supabase auth error:", error);
+            throw new Error("Identifiants invalides");
           }
 
           // Get user profile
-          const { data: profile } = await supabase
+          const { data: profile, error: profileError } = await supabase
             .from("profiles")
             .select("*")
             .eq("id", data.user.id)
             .single();
 
+          if (profileError) {
+            console.error("Profile fetch error:", profileError);
+            throw new Error("Profil utilisateur non trouvé");
+          }
+
           return {
             id: data.user.id,
             email: data.user.email!,
-            name: profile?.full_name || data.user.email,
+            name: profile?.full_name || data.user.email || null,
             image: profile?.avatar_url || null,
             username: profile?.username || null,
           };
@@ -64,49 +90,36 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (!user.email) return false;
+      if (!user.email) {
+        console.error("No email provided");
+        return false;
+      }
 
       try {
-        const supabase = await createServerClient();
+        const supabase = createServerClient();
 
         // For OAuth providers, create/update profile
-        if (account?.provider === "google") {
-          // Check if user exists in Supabase
-          const { data: existingUser } = await supabase
+        if (account?.provider === "google" && profile) {
+          // Check if user exists in Supabase profiles
+          const { data: existingProfile } = await supabase
             .from("profiles")
-            .select("*")
+            .select("id")
             .eq("id", user.id)
             .single();
 
-          if (!existingUser) {
-            // Create user in Supabase auth (if not exists)
-            const { data: authData, error: authError } =
-              await supabase.auth.admin.createUser({
-                email: user.email,
-                email_confirm: true,
-                user_metadata: {
-                  full_name: user.name,
-                  avatar_url: user.image,
-                },
-              });
-
-            if (authError) {
-              console.error("Error creating auth user:", authError);
-              return false;
-            }
-
-            // Create profile
+          if (!existingProfile) {
+            // Create profile for OAuth user
             const username =
-              user.email.split("@")[0] +
+              profile.email?.split("@")[0] +
               "-" +
-              Math.random().toString(36).substr(2, 4);
+              Math.random().toString(36).substr(2, 5);
 
             const { error: profileError } = await supabase
               .from("profiles")
               .insert({
-                id: authData.user.id,
+                id: user.id,
                 username,
-                full_name: user.name || "",
+                full_name: profile.name || user.email.split("@")[0],
                 avatar_url: user.image || null,
               });
 
@@ -114,8 +127,19 @@ export const authOptions: NextAuthOptions = {
               console.error("Error creating profile:", profileError);
               return false;
             }
+          } else {
+            // Update existing profile with latest OAuth data
+            const { error: updateError } = await supabase
+              .from("profiles")
+              .update({
+                avatar_url: user.image || null,
+                full_name: profile.name || user.name || undefined,
+              })
+              .eq("id", user.id);
 
-            user.id = authData.user.id;
+            if (updateError) {
+              console.error("Error updating profile:", updateError);
+            }
           }
         }
 
@@ -130,24 +154,27 @@ export const authOptions: NextAuthOptions = {
       // Initial sign in
       if (user) {
         token.id = user.id;
-        token.username = (user as any).username;
+        token.username = user.username;
+        token.email = user.email;
       }
 
       // Get fresh user data on each request
       if (token.id) {
         try {
-          const supabase = await createServerClient();
-          const { data: profile } = await supabase
+          const supabase = createServerClient();
+          const { data: profile, error } = await supabase
             .from("profiles")
             .select("username, avatar_url, full_name, reputation_score")
             .eq("id", token.id)
             .single();
 
-          if (profile) {
+          if (error) {
+            console.error("JWT profile fetch error:", error);
+          } else if (profile) {
             token.username = profile.username;
             token.name = profile.full_name;
             token.picture = profile.avatar_url;
-            token.reputation = profile.reputation_score;
+            token.reputation = profile.reputation_score || 0;
           }
         } catch (error) {
           console.error("JWT callback error:", error);
@@ -157,25 +184,25 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
 
-    async session({ session, token }) {
-      // if (token) {
-      //   session.user!.id! = token.id as string;
-      //   session.user!.username! = token.username as string;
-      //   session.user!.reputation! = token.reputation as number;
-      // }
+    async session({ session, token }): Promise<Session> {
+      if (session.user && token) {
+        session.user.id = token.id;
+        session.user.username = token.username;
+        session.user.image = token.picture || null;
+      }
       return session;
     },
   },
 
   pages: {
     signIn: "/auth/login",
-    signOut: "/auth/logout",
     error: "/auth/error",
   },
 
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // Update session every day
   },
 
   secret: process.env.NEXTAUTH_SECRET,

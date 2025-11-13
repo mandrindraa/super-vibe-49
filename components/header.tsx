@@ -2,6 +2,7 @@
 
 import ThemeToggle from "@/components/theme-toggle";
 import { Leaf } from "lucide-react";
+import UserMenu from "./user-menu";
 
 export default function Header() {
   return (
@@ -15,7 +16,7 @@ export default function Header() {
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
-          {Object.entries({
+          {/* {Object.entries({
             exploration: "Explorer",
             contribuer: "Contribuer",
           }).map((item) => (
@@ -27,7 +28,8 @@ export default function Header() {
               {item[1]}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary group-hover:w-full transition-all duration-300" />
             </a>
-          ))}
+          ))} */}
+          <UserMenu />
           <ThemeToggle />
         </nav>
       </div>

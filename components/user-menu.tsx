@@ -81,9 +81,9 @@ export default function UserMenu() {
               <p className="text-xs leading-none text-muted-foreground">
                 {user?.email}
               </p>
-              {user?.username && (
+              {(user as any)?.username && (
                 <p className="text-xs leading-none text-muted-foreground">
-                  @{user.username}
+                  @{(user as any).username}
                 </p>
               )}
             </div>
@@ -93,7 +93,7 @@ export default function UserMenu() {
 
           <DropdownMenuItem asChild>
             <Link
-              href={`/profile/${user?.username}`}
+              href={`/profile/${(user as any)?.username}`}
               className="cursor-pointer"
             >
               <User className="w-4 h-4 mr-2" />
