@@ -63,7 +63,7 @@
 
 ### Login Flow
 
-```
+\`\`\`
 User submits credentials
     ↓
 NextAuth Credentials Provider
@@ -77,11 +77,11 @@ Return user object
 JWT token created
     ↓
 Redirect to home page
-```
+\`\`\`
 
 ### Google OAuth Flow
 
-```
+\`\`\`
 User clicks "Sign in with Google"
     ↓
 Google OAuth consent screen
@@ -95,13 +95,13 @@ Check if profile exists (if not, create)
 JWT token created
     ↓
 Redirect to home page
-```
+\`\`\`
 
 ## 📝 Database Structure
 
 ### profiles table
 
-```
+\`\`\`
 id (UUID) → auth.users.id
 username (TEXT) → unique
 full_name (TEXT)
@@ -112,7 +112,7 @@ reputation_score (INT)
 region (TEXT)
 badges (JSONB)
 created_at, updated_at
-```
+\`\`\`
 
 ## 🚀 Usage Examples
 
@@ -127,7 +127,7 @@ The login page (`app/auth/login/page.tsx`) already uses:
 
 ### Getting Current User
 
-```typescript
+\`\`\`typescript
 // In Client Component
 import { useAuthSession } from "@/hooks/use-auth-session";
 
@@ -143,11 +143,11 @@ async function ServerComponent() {
   const user = await getCurrentUser();
   return <div>{user?.email}</div>;
 }
-```
+\`\`\`
 
 ### Protecting API Routes
 
-```typescript
+\`\`\`typescript
 // In app/api/my-endpoint/route.ts
 import { requireAuth } from "@/lib/auth";
 
@@ -155,7 +155,7 @@ export async function POST(request: Request) {
   const user = await requireAuth(); // Throws if not authenticated
   // Use user.id for operations
 }
-```
+\`\`\`
 
 ## 🔐 Security Features
 

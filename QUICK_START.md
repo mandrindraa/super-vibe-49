@@ -18,16 +18,16 @@ Your authentication backend is **fully configured** with:
 
 ### 1. **Start Dev Server**
 
-```bash
+\`\`\`bash
 npm run dev
 # Server runs at http://localhost:3000
-```
+\`\`\`
 
 ### 2. **Visit Login Page**
 
-```
+\`\`\`
 Open http://localhost:3000/auth/login
-```
+\`\`\`
 
 ### 3. **Test Registration**
 
@@ -49,7 +49,7 @@ Click the "Sign in with Google" button
 
 ## 📁 Where Everything Is
 
-```
+\`\`\`
 Authentication Files:
 ├── app/api/auth/[...nextauth]/route.ts   ← NextAuth config
 ├── app/api/auth/signup/route.ts          ← Register endpoint
@@ -64,7 +64,7 @@ Documentation:
 ├── README_AUTH.md                        ← Overview
 ├── COMPLETE_SUMMARY.md                   ← This project
 └── (+ 5 more detailed docs)
-```
+\`\`\`
 
 ---
 
@@ -72,44 +72,44 @@ Documentation:
 
 ### Get Current User (Client)
 
-```typescript
+\`\`\`typescript
 import { useAuthSession } from "@/hooks/use-auth-session";
 
 function MyComponent() {
   const { user, isAuthenticated } = useAuthSession();
   return <div>User: {user?.email}</div>;
 }
-```
+\`\`\`
 
 ### Get Current User (Server)
 
-```typescript
+\`\`\`typescript
 import { getCurrentUser } from "@/lib/auth";
 
 async function MyServerComponent() {
   const user = await getCurrentUser();
   return <div>User: {user?.email}</div>;
 }
-```
+\`\`\`
 
 ### Sign Out
 
-```typescript
+\`\`\`typescript
 import { signOut } from "next-auth/react";
 
 <button onClick={() => signOut({ callbackUrl: "/" })}>Sign Out</button>;
-```
+\`\`\`
 
 ### Protect API Route
 
-```typescript
+\`\`\`typescript
 import { requireAuth } from "@/lib/auth";
 
 export async function GET() {
   const user = await requireAuth(); // Throws if not auth
   return Response.json({ userId: user.id });
 }
-```
+\`\`\`
 
 ---
 

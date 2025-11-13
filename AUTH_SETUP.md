@@ -14,10 +14,10 @@ The application uses **NextAuth.js** with **Supabase** for authentication. It su
 
 #### 1. **Supabase Client** (`lib/supabase/client.ts`)
 
-```typescript
+\`\`\`typescript
 createServerClient(); // Server-side operations with service role
 createBrowserClient(); // Client-side operations
-```
+\`\`\`
 
 #### 2. **NextAuth Configuration** (`app/api/auth/[...nextauth]/route.ts`)
 
@@ -27,7 +27,7 @@ createBrowserClient(); // Client-side operations
 
 #### 3. **Database Schema** (Supabase)
 
-```sql
+\`\`\`sql
 profiles table:
 - id (UUID) - Primary key, linked to auth.users
 - username (TEXT) - Unique identifier
@@ -40,7 +40,7 @@ profiles table:
 - badges (JSONB) - Array of earned badges
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
-```
+\`\`\`
 
 ## Authentication Flow
 
@@ -75,17 +75,17 @@ Creates a new user account.
 
 **Request:**
 
-```json
+\`\`\`json
 {
   "email": "user@example.com",
   "password": "SecurePassword123",
   "fullName": "John Doe"
 }
-```
+\`\`\`
 
 **Response (201):**
 
-```json
+\`\`\`json
 {
   "message": "Compte créé avec succès",
   "user": {
@@ -94,7 +94,7 @@ Creates a new user account.
     "username": "john-abc123"
   }
 }
-```
+\`\`\`
 
 **Errors:**
 
@@ -103,7 +103,7 @@ Creates a new user account.
 
 ## Environment Variables
 
-```env
+\`\`\`env
 # Supabase
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_API_KEY=your-api-key
@@ -115,13 +115,13 @@ NEXTAUTH_SECRET=your-secret-key
 # OAuth Providers
 GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-client-secret
-```
+\`\`\`
 
 ## Type Safety
 
 ### Session User Type
 
-```typescript
+\`\`\`typescript
 interface User {
   id: string; // UUID from Supabase
   email: string; // User email
@@ -129,24 +129,24 @@ interface User {
   image: string | null; // Avatar URL
   username: string | null; // Unique username
 }
-```
+\`\`\`
 
 ### JWT Token Type
 
-```typescript
+\`\`\`typescript
 interface JWT {
   id: string;
   username: string | null;
   reputation?: number;
   // ... other standard JWT fields
 }
-```
+\`\`\`
 
 ## Usage in Components
 
 ### Get Current Session
 
-```typescript
+\`\`\`typescript
 import { useSession } from "next-auth/react";
 
 export function MyComponent() {
@@ -157,11 +157,11 @@ export function MyComponent() {
 
   return <div>Welcome, {session?.user?.name}</div>;
 }
-```
+\`\`\`
 
 ### Using Auth Hook
 
-```typescript
+\`\`\`typescript
 import { useAuthSession } from "@/hooks/use-auth-session";
 
 export function MyComponent() {
@@ -179,15 +179,15 @@ export function MyComponent() {
     </div>
   );
 }
-```
+\`\`\`
 
 ### Sign Out
 
-```typescript
+\`\`\`typescript
 import { signOut } from "next-auth/react";
 
 <button onClick={() => signOut({ callbackUrl: "/" })}>Sign Out</button>;
-```
+\`\`\`
 
 ## Security Considerations
 
@@ -240,7 +240,7 @@ import { signOut } from "next-auth/react";
 
 ### Create profiles table if not exists:
 
-```sql
+\`\`\`sql
 CREATE TABLE profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   username TEXT UNIQUE NOT NULL,
@@ -256,11 +256,11 @@ CREATE TABLE profiles (
 );
 
 CREATE INDEX profiles_username_idx ON profiles(username);
-```
+\`\`\`
 
 ### Enable RLS (Row Level Security):
 
-```sql
+\`\`\`sql
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
 -- Allow users to read any profile
@@ -272,7 +272,7 @@ CREATE POLICY "Profiles are viewable by everyone"
 CREATE POLICY "Users can update their own profile"
   ON profiles FOR UPDATE
   USING (auth.uid() = id);
-```
+\`\`\`
 
 ## Next Steps
 

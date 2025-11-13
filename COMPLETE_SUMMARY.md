@@ -83,7 +83,7 @@ All authentication systems have been successfully implemented, configured, and t
 
 ### 1. **Verify Setup**
 
-```bash
+\`\`\`bash
 # Check environment variables
 cat .env
 
@@ -91,11 +91,11 @@ cat .env
 ls -la app/api/auth/*/route.ts
 ls -la hooks/use-auth-session.ts
 ls -la lib/auth.ts
-```
+\`\`\`
 
 ### 2. **Test Locally**
 
-```bash
+\`\`\`bash
 # Start dev server
 npm run dev
 
@@ -104,11 +104,11 @@ npm run dev
 # - Email/password login
 # - Google OAuth
 # - Logout
-```
+\`\`\`
 
 ### 3. **Create Test User**
 
-```bash
+\`\`\`bash
 # Via API
 curl -X POST http://localhost:3000/api/auth/signup \
   -H "Content-Type: application/json" \
@@ -117,7 +117,7 @@ curl -X POST http://localhost:3000/api/auth/signup \
     "password": "TestPass123",
     "fullName": "Test User"
   }'
-```
+\`\`\`
 
 ### 4. **Deploy to Production**
 
@@ -150,27 +150,27 @@ Before deploying:
 
 ### Authentication Core
 
-```
+\`\`\`
 app/api/auth/[...nextauth]/route.ts    ← NextAuth configuration
 app/api/auth/signup/route.ts           ← User registration
 lib/supabase/client.ts                 ← Supabase clients
 lib/auth.ts                            ← Server utilities
-```
+\`\`\`
 
 ### Frontend
 
-```
+\`\`\`
 app/auth/login/page.tsx                ← Login page
 hooks/use-auth-session.ts              ← useAuthSession hook
 components/user-menu.tsx               ← Already integrated!
-```
+\`\`\`
 
 ### Configuration
 
-```
+\`\`\`
 .env                                   ← Environment variables
 app/providers.tsx                      ← Session provider setup
-```
+\`\`\`
 
 ---
 
@@ -229,7 +229,7 @@ app/providers.tsx                      ← Session provider setup
 
 ## 📚 Documentation Structure
 
-```
+\`\`\`
 DOCUMENTATION_INDEX.md          ← Start here for navigation
     ├── README_AUTH.md          ← Quick start (for users)
     ├── AUTHENTICATION_SUMMARY.md ← What was built
@@ -238,7 +238,7 @@ DOCUMENTATION_INDEX.md          ← Start here for navigation
     ├── AUTH_CHECKLIST.md       ← Testing & deployment
     ├── ARCHITECTURE_DIAGRAMS.md ← Visual guides
     └── This file               ← Project summary
-```
+\`\`\`
 
 ---
 

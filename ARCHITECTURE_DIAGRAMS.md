@@ -2,7 +2,7 @@
 
 ## 🏗️ System Architecture Diagram
 
-```
+\`\`\`
 ┌─────────────────────────────────────────────────────────────────┐
 │                        User Browser                               │
 ├─────────────────────────────────────────────────────────────────┤
@@ -71,13 +71,13 @@
         │                               └─────────────────┘         │
         │                                                             │
         └───────────────────────────────────────────────────────────┘
-```
+\`\`\`
 
 ## 🔄 Authentication Flows
 
 ### Email/Password Login Flow
 
-```
+\`\`\`
 ┌─────────┐
 │  User   │
 │ Enters  │
@@ -139,11 +139,11 @@
 │ Redirect to Home Page                   │
 │ User is now logged in                   │
 └─────────────────────────────────────────┘
-```
+\`\`\`
 
 ### Google OAuth Flow
 
-```
+\`\`\`
 ┌─────────────┐
 │ User Clicks │
 │Google Button│
@@ -199,11 +199,11 @@
 │ Redirect to Home                 │
 │ User is logged in                │
 └──────────────────────────────────┘
-```
+\`\`\`
 
 ## 🔐 Data Flow Diagram
 
-```
+\`\`\`
 Browser (Client)                 Server                         Database
     │                              │                              │
     ├─ useAuthSession() ─────────► getServerSession() ────────► JWT Token
@@ -229,11 +229,11 @@ Browser (Client)                 Server                         Database
     │                            │
     │                            ├─► Create Profile
     │                            └──► profiles table
-```
+\`\`\`
 
 ## 📱 Component Integration
 
-```
+\`\`\`
 App Root
 ├── SessionProvider (NextAuth)
 │   └── Providers (from app/providers.tsx)
@@ -255,11 +255,11 @@ App Root
 │                   └── Protected Pages
 │                       └── useAuthSession
 │                           └── Guard access
-```
+\`\`\`
 
 ## 🔌 API Endpoints
 
-```
+\`\`\`
 NextAuth Endpoints (automatic)
 ├── GET  /api/auth/signin
 ├── GET  /api/auth/callback/google
@@ -278,11 +278,11 @@ Custom Endpoints
 │
 └── Protected Routes (require auth)
     └── Use requireAuth() utility
-```
+\`\`\`
 
 ## 🔑 Token & Session Lifecycle
 
-```
+\`\`\`
 Timeline          Event                       Storage
 ──────────────────────────────────────────────────────────
 T=0               User Login
@@ -310,11 +310,11 @@ T=30 days         Token Expires
                   └─ Redirect to login        Clean Cookie
 
 T=31 days         New Login Required          [User logs in again]
-```
+\`\`\`
 
 ## 🛡️ Security Layers
 
-```
+\`\`\`
 Layer 1: Transport
 ├── HTTPS only (production)
 └── HTTP-only cookies (no JS access)
@@ -342,7 +342,7 @@ Layer 5: Code
 ├── No sensitive data in JWT
 ├── Secure key usage
 └── Error handling (no data leaks)
-```
+\`\`\`
 
 ---
 

@@ -4,7 +4,7 @@
 
 ### In Client Components
 
-```typescript
+\`\`\`typescript
 "use client";
 import { useAuthSession } from "@/hooks/use-auth-session";
 
@@ -15,11 +15,11 @@ export default function Page() {
   if (!isAuthenticated) return <a href="/auth/login">Sign In</a>;
   return <p>Welcome, {user?.name}</p>;
 }
-```
+\`\`\`
 
 ### In Server Components
 
-```typescript
+\`\`\`typescript
 import { getCurrentUser } from "@/lib/auth";
 
 export default async function Page() {
@@ -28,11 +28,11 @@ export default async function Page() {
   if (!user) return <p>Please sign in</p>;
   return <p>Welcome, {user.name}</p>;
 }
-```
+\`\`\`
 
 ## 🚀 Sign In / Sign Out
 
-```typescript
+\`\`\`typescript
 import { signIn, signOut } from "next-auth/react";
 
 // Email/Password Login
@@ -48,11 +48,11 @@ await signIn("google");
 
 // Sign Out
 await signOut({ callbackUrl: "/" });
-```
+\`\`\`
 
 ## 📝 User Registration
 
-```typescript
+\`\`\`typescript
 // Call signup API endpoint
 const response = await fetch("/api/auth/signup", {
   method: "POST",
@@ -71,11 +71,11 @@ if (response.ok) {
 } else {
   console.error("Signup error:", data.error);
 }
-```
+\`\`\`
 
 ## 🛡️ Protect API Routes
 
-```typescript
+\`\`\`typescript
 // app/api/protected/route.ts
 import { requireAuth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -88,11 +88,11 @@ export async function GET(request: NextRequest) {
     userId: user.id,
   });
 }
-```
+\`\`\`
 
 ## 🔄 Access Session in API Routes
 
-```typescript
+\`\`\`typescript
 // app/api/my-data/route.ts
 import { getServerAuthSession } from "@/lib/auth";
 
@@ -107,11 +107,11 @@ export async function GET() {
     user: session.user,
   });
 }
-```
+\`\`\`
 
 ## 📊 User Data Fields
 
-```typescript
+\`\`\`typescript
 interface User {
   id: string; // UUID
   email: string; // user@example.com
@@ -119,11 +119,11 @@ interface User {
   image: string | null; // Avatar URL
   username: string | null; // Unique username
 }
-```
+\`\`\`
 
 ## 🎨 Redirect After Login
 
-```typescript
+\`\`\`typescript
 // app/auth/login/page.tsx
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -141,11 +141,11 @@ export default function LoginPage() {
     router.push(callbackUrl);
   };
 }
-```
+\`\`\`
 
 ## 🔗 Update User Session
 
-```typescript
+\`\`\`typescript
 "use client";
 import { useSession } from "next-auth/react";
 
@@ -159,11 +159,11 @@ export function Component() {
     await update();
   };
 }
-```
+\`\`\`
 
 ## ❌ Handle Auth Errors
 
-```typescript
+\`\`\`typescript
 const result = await signIn("credentials", {
   email,
   password,
@@ -179,29 +179,29 @@ if (result?.error) {
   // Success
   router.push("/");
 }
-```
+\`\`\`
 
 ## 🎯 Common Use Cases
 
 ### Check if user is admin
 
-```typescript
+\`\`\`typescript
 // Add isAdmin field to user profile in Supabase
 const user = await getCurrentUser();
 const isAdmin = user?.role === "admin";
-```
+\`\`\`
 
 ### Get user reputation
 
-```typescript
+\`\`\`typescript
 // Use JWT token in callbacks
 const session = await getServerAuthSession();
 const reputation = (session as any)?.user?.reputation || 0;
-```
+\`\`\`
 
 ### Track user activity
 
-```typescript
+\`\`\`typescript
 // Create activity log in Supabase
 import { createServerClient } from "@/lib/supabase/client";
 
@@ -210,7 +210,7 @@ await supabase.from("activities").insert({
   user_id: user.id,
   activity_type: "login",
 });
-```
+\`\`\`
 
 ## 📞 Support
 

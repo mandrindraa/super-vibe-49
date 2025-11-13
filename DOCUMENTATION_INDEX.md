@@ -48,29 +48,29 @@ New to the auth setup? Start with these files in order:
 
 ### Core Authentication
 
-```
+\`\`\`
 app/api/auth/[...nextauth]/route.ts    NextAuth configuration with Supabase
 app/api/auth/signup/route.ts           User registration endpoint
-```
+\`\`\`
 
 ### Client Utilities
 
-```
+\`\`\`
 hooks/use-auth-session.ts               useAuthSession() hook
 lib/auth.ts                             Server-side auth utilities
 lib/supabase/client.ts                  Supabase client setup
-```
+\`\`\`
 
 ### Configuration
 
-```
+\`\`\`
 .env                                    Environment variables
 app/auth/login/page.tsx                 Login page (frontend)
-```
+\`\`\`
 
 ## 📚 Full Documentation Map
 
-```
+\`\`\`
 README_AUTH.md
 ├── Overview
 ├── How to Use
@@ -116,7 +116,7 @@ AUTH_CHECKLIST.md
 ├── Documentation ✅
 ├── Testing Checklist
 └── Deployment Checklist
-```
+\`\`\`
 
 ## 🎯 By Use Case
 
@@ -184,14 +184,14 @@ AUTH_CHECKLIST.md
 
 ## 📊 Environment Variables
 
-```env
+\`\`\`env
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_API_KEY=your-service-key
 NEXTAUTH_URL=http://localhost:3000 (or https://yourdomain.com)
 NEXTAUTH_SECRET=your-secret-key
 GOOGLE_CLIENT_ID=your-client-id
 GOOGLE_CLIENT_SECRET=your-client-secret
-```
+\`\`\`
 
 ## ✅ Feature Checklist
 

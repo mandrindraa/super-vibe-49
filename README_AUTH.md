@@ -38,7 +38,7 @@ Your authentication backend is now **fully configured and production-ready** wit
 
 ### New Files
 
-```
+\`\`\`
 app/api/auth/signup/route.ts           ← User registration endpoint
 hooks/use-auth-session.ts               ← Client auth hook
 lib/auth.ts                             ← Server auth utilities
@@ -46,21 +46,21 @@ AUTH_SETUP.md                           ← Full documentation
 AUTHENTICATION_SUMMARY.md               ← Implementation overview
 AUTH_QUICK_REFERENCE.md                 ← Quick reference guide
 AUTH_CHECKLIST.md                       ← Testing & deployment checklist
-```
+\`\`\`
 
 ### Modified Files
 
-```
+\`\`\`
 lib/supabase/client.ts                  ← Enhanced with typed clients
 app/api/auth/[...nextauth]/route.ts     ← Improved with types & error handling
 .env                                     ← Formatted environment variables
-```
+\`\`\`
 
 ## 🚀 How to Use
 
 ### Register a New User
 
-```bash
+\`\`\`bash
 curl -X POST http://localhost:3000/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
@@ -68,11 +68,11 @@ curl -X POST http://localhost:3000/api/auth/signup \
     "password": "SecurePass123",
     "fullName": "John Doe"
   }'
-```
+\`\`\`
 
 ### Login in Frontend
 
-```typescript
+\`\`\`typescript
 import { signIn } from "next-auth/react";
 
 // Email/Password
@@ -85,11 +85,11 @@ await signIn("credentials", {
 
 // Google OAuth
 await signIn("google");
-```
+\`\`\`
 
 ### Get Current User
 
-```typescript
+\`\`\`typescript
 // In Client Components
 import { useAuthSession } from "@/hooks/use-auth-session";
 const { user, isAuthenticated } = useAuthSession();
@@ -101,7 +101,7 @@ const user = await getCurrentUser();
 // In API Routes
 import { requireAuth } from "@/lib/auth";
 const user = await requireAuth();
-```
+\`\`\`
 
 ## 🔑 Environment Variables
 
@@ -163,27 +163,27 @@ Your Supabase `profiles` table includes:
 
 ### Test Registration
 
-```
+\`\`\`
 Navigate to /auth/login → See signup link
 Click signup link → Fill form → Submit
 Check Supabase for new user and profile
-```
+\`\`\`
 
 ### Test Email/Password Login
 
-```
+\`\`\`
 Go to /auth/login → Enter credentials
 Should redirect to home if successful
 Session should persist across reloads
-```
+\`\`\`
 
 ### Test Google OAuth
 
-```
+\`\`\`
 Go to /auth/login → Click Google button
 Complete Google consent screen
 Should create profile and redirect
-```
+\`\`\`
 
 ## 🎯 Next Steps
 

@@ -8,7 +8,7 @@ Your authentication backend is **fully implemented**, **fully documented**, and 
 
 ## 📊 What You Got
 
-```
+\`\`\`
 ┌─────────────────────────────────────────────────────────┐
 │          AUTHENTICATION BACKEND - COMPLETE              │
 ├─────────────────────────────────────────────────────────┤
@@ -28,7 +28,7 @@ Your authentication backend is **fully implemented**, **fully documented**, and 
 │  🧪 Testing: Ready                                     │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
-```
+\`\`\`
 
 ---
 
@@ -36,15 +36,15 @@ Your authentication backend is **fully implemented**, **fully documented**, and 
 
 ### Step 1: Start the Server
 
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 ### Step 2: Open Login Page
 
-```
+\`\`\`
 http://localhost:3000/auth/login
-```
+\`\`\`
 
 ### Step 3: Test It!
 
@@ -58,7 +58,7 @@ http://localhost:3000/auth/login
 
 All documentation is in the **project root**:
 
-```
+\`\`\`
 QUICK_START.md ..................... Start here (2 min read)
 DOCUMENTATION_INDEX.md ............. Navigation guide
 README_AUTH.md ..................... Project overview
@@ -69,7 +69,7 @@ ARCHITECTURE_DIAGRAMS.md ........... Visual guides
 AUTH_CHECKLIST.md .................. Testing & deployment
 DELIVERABLES.md .................... Complete list
 COMPLETE_SUMMARY.md ................ Project details
-```
+\`\`\`
 
 **Total**: 10 comprehensive documentation files
 
@@ -79,27 +79,27 @@ COMPLETE_SUMMARY.md ................ Project details
 
 ### Authentication Core (3 files created)
 
-```
+\`\`\`
 ✅ app/api/auth/signup/route.ts        → User registration API
 ✅ hooks/use-auth-session.ts           → Client auth hook
 ✅ lib/auth.ts                         → Server utilities
-```
+\`\`\`
 
 ### Configuration (3 files updated)
 
-```
+\`\`\`
 ✅ app/api/auth/[...nextauth]/route.ts → NextAuth config
 ✅ lib/supabase/client.ts              → Supabase setup
 ✅ .env                                → Environment vars
-```
+\`\`\`
 
 ### Frontend (Already done)
 
-```
+\`\`\`
 ✅ app/auth/login/page.tsx             → Login page UI
 ✅ components/header.tsx               → User menu integrated
 ✅ components/user-menu.tsx            → Auth menu
-```
+\`\`\`
 
 ---
 
@@ -107,35 +107,35 @@ COMPLETE_SUMMARY.md ................ Project details
 
 ### Check if User is Logged In
 
-```typescript
+\`\`\`typescript
 // Client Component
 const { user, isAuthenticated } = useAuthSession();
 
 // Server Component
 const user = await getCurrentUser();
-```
+\`\`\`
 
 ### Sign Out
 
-```typescript
+\`\`\`typescript
 import { signOut } from "next-auth/react";
 await signOut({ callbackUrl: "/" });
-```
+\`\`\`
 
 ### Protect API Routes
 
-```typescript
+\`\`\`typescript
 import { requireAuth } from "@/lib/auth";
 
 export async function GET() {
   const user = await requireAuth(); // Throws if not auth
   return Response.json({ userId: user.id });
 }
-```
+\`\`\`
 
 ### Register a User
 
-```bash
+\`\`\`bash
 curl -X POST http://localhost:3000/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
@@ -143,7 +143,7 @@ curl -X POST http://localhost:3000/api/auth/signup \
     "password": "Password123",
     "fullName": "John Doe"
   }'
-```
+\`\`\`
 
 ---
 
@@ -354,7 +354,7 @@ Before going to production:
 
 Start with one of these based on your need:
 
-```
+\`\`\`
 Want to get started quickly?
 → QUICK_START.md
 
@@ -372,7 +372,7 @@ Want to see diagrams?
 
 Ready to deploy?
 → AUTH_CHECKLIST.md
-```
+\`\`\`
 
 ---
 
@@ -406,7 +406,7 @@ You now have a **world-class authentication system** that is:
 
 ## 🚀 Get Started Now!
 
-```bash
+\`\`\`bash
 # 1. Start dev server
 npm run dev
 
@@ -415,7 +415,7 @@ npm run dev
 
 # 3. Test authentication
 # Register → Login → Done!
-```
+\`\`\`
 
 ---
 
