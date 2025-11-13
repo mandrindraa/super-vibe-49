@@ -23,7 +23,7 @@ interface CreateSavoirData {
   region?: string;
   images?: string[];
   tags?: string[];
-  published?: boolean;
+  published: boolean;
 }
 
 interface Savoir {

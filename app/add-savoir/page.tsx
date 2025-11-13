@@ -24,7 +24,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-// // Import rich text editor dynamically to avoid SSR issues
+// Import rich text editor dynamically to avoid SSR issues
 // const RichTextEditor = dynamic(() => import("@/components/rich-text-editor"), {
 //   ssr: false,
 //   loading: () => <div className="h-64 bg-muted animate-pulse rounded-lg" />,
