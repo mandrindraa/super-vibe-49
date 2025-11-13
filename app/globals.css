@@ -125,6 +125,18 @@
     @apply bg-background text-foreground;
   }
 
+  /* Smooth scrolling for the whole site (respects user preference) */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   h1,
   h2,
   h3 {
@@ -148,6 +160,46 @@
 
   .gradient-text {
     @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+  }
+
+  /* Animated gradient button used for primary CTAs */
+  @keyframes gradient-slide {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .btn-animated {
+    /* base sizing & layout */
+    @apply text-white font-semibold py-3 px-6 rounded-lg shadow-2xl inline-flex items-center gap-3;
+    /* gradient background that animates */
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+    background-size: 200% 200%;
+    animation: gradient-slide 6s ease infinite;
+    transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms;
+  }
+
+  .btn-animated:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(16,24,40,0.18);
+  }
+
+  .btn-animated:active {
+    transform: translateY(-1px) scale(0.995);
+  }
+
+  .btn-animated .btn-icon {
+    @apply transition-transform duration-300;
+  }
+
+  .btn-animated:hover .btn-icon {
+    transform: translateX(6px);
   }
 
   @keyframes float-in {

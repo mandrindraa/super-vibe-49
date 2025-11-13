@@ -1,16 +1,18 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Geist, Geist_Mono, Inter } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
+import { Analytics } from "@vercel/analytics/next";
+import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
+import type React from "react";
+import "./globals.css";
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
-const _inter = Inter({ subsets: ["latin"] })
+const _geist = Geist({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const _inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "L'Arche des Savoirs - Partage de Connaissances Anciennes",
-  description: "Découvrez et partagez les savoirs du passé pour cultiver demain",
+  description:
+    "Découvrez et partagez les savoirs du passé pour cultiver demain",
   generator: "v0.app",
   icons: {
     icon: [
@@ -29,19 +31,44 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <body className={`font-sans antialiased ${_inter.className}`}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+
         <Analytics />
       </body>
     </html>
-  )
+  );
 }
+
+// import { Providers } from "./providers";
+
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="fr">
+//       <body className={`font-sans antialiased ${inter.className}`}>
+//         <Providers>{children}</Providers>
+//         <Analytics />
+//       </body>
+//     </html>
+//   );
+// }
