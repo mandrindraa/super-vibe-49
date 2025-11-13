@@ -1,13 +1,13 @@
-import { ChevronLeft, Leaf, User, Clock, Tag, Share2 } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import VotingSystem from "@/app/components/voting-system"
-import CommentsSection from "@/app/components/comments-section"
-import ReactionsBar from "@/app/components/reactions-bar"
+import CommentsSection from "@/components/comments-section";
+import ReactionsBar from "@/components/reactions-bar";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import VotingSystem from "@/components/voting-system";
+import { ChevronLeft, Clock, Leaf, Share2, Tag, User } from "lucide-react";
+import Link from "next/link";
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 // Mock data for detail page
@@ -53,31 +53,40 @@ const savoirDetails: Record<string, any> = {
       { id: "2", title: "Fabrication du Fromage Fermier" },
     ],
   },
-}
+};
 
 export default async function DetailPage({ params }: PageProps) {
-  const { id } = await params
-  const savoir = savoirDetails[id] || savoirDetails["1"]
+  const { id } = await params;
+  const savoir = savoirDetails[id] || savoirDetails["1"];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header Navigation */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2 text-primary hover:text-primary/80 transition">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-primary hover:text-primary/80 transition"
+          >
             <ChevronLeft className="w-5 h-5" />
             <span>Retour</span>
           </Link>
           <div className="flex-1 flex items-center gap-2 md:ml-8">
             <Leaf className="w-6 h-6 text-primary" />
-            <h1 className="text-xl font-bold text-primary">L'Arche des Savoirs</h1>
+            <h1 className="text-xl font-bold text-primary">
+              L'Arche des Savoirs
+            </h1>
           </div>
         </div>
       </header>
 
       {/* Hero Image */}
       <div className="relative h-96 md:h-[500px] overflow-hidden bg-muted">
-        <img src={savoir.image || "/placeholder.svg"} alt={savoir.title} className="w-full h-full object-cover" />
+        <img
+          src={savoir.image || "/placeholder.svg"}
+          alt={savoir.title}
+          className="w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
       </div>
 
@@ -91,9 +100,13 @@ export default async function DetailPage({ params }: PageProps) {
                 <span className="inline-block bg-accent/20 text-accent px-4 py-2 rounded-full font-medium">
                   {savoir.category}
                 </span>
-                <span className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full">{savoir.era}</span>
+                <span className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full">
+                  {savoir.era}
+                </span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground">{savoir.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+                {savoir.title}
+              </h1>
               <p className="text-lg text-foreground/70">{savoir.excerpt}</p>
             </div>
 
@@ -102,15 +115,21 @@ export default async function DetailPage({ params }: PageProps) {
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase">Publié le</p>
+                  <p className="text-xs text-muted-foreground uppercase">
+                    Publié le
+                  </p>
                   <p className="font-medium text-foreground">{savoir.date}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <User className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase">Contributeur</p>
-                  <p className="font-medium text-foreground">{savoir.contributor.name}</p>
+                  <p className="text-xs text-muted-foreground uppercase">
+                    Contributeur
+                  </p>
+                  <p className="font-medium text-foreground">
+                    {savoir.contributor.name}
+                  </p>
                 </div>
               </div>
             </div>
@@ -119,56 +138,74 @@ export default async function DetailPage({ params }: PageProps) {
             <article className="prose prose-neutral max-w-none space-y-6 text-foreground">
               <div className="space-y-4 text-lg leading-relaxed">
                 <p>
-                  Pendant des millénaires, les agriculteurs ont perfectionné l'art du semis en observant la nature. Ces
-                  techniques, transmises de génération en génération, reposaient sur une compréhension profonde des
-                  cycles lunaires et des conditions climatiques.
+                  Pendant des millénaires, les agriculteurs ont perfectionné
+                  l'art du semis en observant la nature. Ces techniques,
+                  transmises de génération en génération, reposaient sur une
+                  compréhension profonde des cycles lunaires et des conditions
+                  climatiques.
                 </p>
 
-                <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">Les Principes Fondamentaux</h2>
-                <p>Le semis traditionnel respectait plusieurs principes clés :</p>
+                <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">
+                  Les Principes Fondamentaux
+                </h2>
+                <p>
+                  Le semis traditionnel respectait plusieurs principes clés :
+                </p>
                 <ul className="space-y-3 ml-4">
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">•</span>
                     <span>
-                      <strong>Respect du calendrier lunaire :</strong> Les semis se faisaient à la lune montante pour
-                      les cultures aériennes.
+                      <strong>Respect du calendrier lunaire :</strong> Les semis
+                      se faisaient à la lune montante pour les cultures
+                      aériennes.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">•</span>
                     <span>
-                      <strong>Préparation du sol :</strong> Le terrain était enrichi avec des composts naturels et du
-                      fumier bien décomposé.
+                      <strong>Préparation du sol :</strong> Le terrain était
+                      enrichi avec des composts naturels et du fumier bien
+                      décomposé.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">•</span>
                     <span>
-                      <strong>Rotation des cultures :</strong> Les parcelles alternaient les plantations pour préserver
-                      la fertilité du sol.
+                      <strong>Rotation des cultures :</strong> Les parcelles
+                      alternaient les plantations pour préserver la fertilité du
+                      sol.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">•</span>
                     <span>
-                      <strong>Sélection des graines :</strong> Les meilleures graines étaient conservées d'année en
-                      année.
+                      <strong>Sélection des graines :</strong> Les meilleures
+                      graines étaient conservées d'année en année.
                     </span>
                   </li>
                 </ul>
 
-                <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">La Technique du Semis en Ligne</h2>
+                <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">
+                  La Technique du Semis en Ligne
+                </h2>
                 <p>
-                  Le semis en ligne, pratiqué depuis l'Antiquité, offrait plusieurs avantages. Cette méthode permettait
-                  un meilleur contrôle de l'espace entre les graines, réduisant la compétition et facilitant le
-                  désherbage manuel. Elle garantissait également une répartition plus uniforme des nutriments du sol.
+                  Le semis en ligne, pratiqué depuis l'Antiquité, offrait
+                  plusieurs avantages. Cette méthode permettait un meilleur
+                  contrôle de l'espace entre les graines, réduisant la
+                  compétition et facilitant le désherbage manuel. Elle
+                  garantissait également une répartition plus uniforme des
+                  nutriments du sol.
                 </p>
 
-                <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">Relevance Contemporaine</h2>
+                <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">
+                  Relevance Contemporaine
+                </h2>
                 <p>
-                  Aujourd'hui, face aux défis de la durabilité et de la production bio-certifiée, ces anciennes
-                  techniques retrouvent une importance particulière. Elles prouvent qu'une agriculture productive est
-                  possible sans dépendre des intrants chimiques modernes.
+                  Aujourd'hui, face aux défis de la durabilité et de la
+                  production bio-certifiée, ces anciennes techniques retrouvent
+                  une importance particulière. Elles prouvent qu'une agriculture
+                  productive est possible sans dépendre des intrants chimiques
+                  modernes.
                 </p>
               </div>
             </article>
@@ -198,7 +235,11 @@ export default async function DetailPage({ params }: PageProps) {
 
             {/* Share */}
             <div className="pt-6 border-t border-border flex gap-3">
-              <Button variant="outline" size="sm" className="flex items-center gap-2 bg-transparent">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 bg-transparent"
+              >
                 <Share2 className="w-4 h-4" />
                 Partager
               </Button>
@@ -209,7 +250,9 @@ export default async function DetailPage({ params }: PageProps) {
           <div className="space-y-6">
             {/* Contributor Card */}
             <Card className="p-6 space-y-4">
-              <h3 className="font-semibold text-foreground">À propos du contributeur</h3>
+              <h3 className="font-semibold text-foreground">
+                À propos du contributeur
+              </h3>
               <div className="flex gap-4">
                 <img
                   src={savoir.contributor.avatar || "/placeholder.svg"}
@@ -217,18 +260,28 @@ export default async function DetailPage({ params }: PageProps) {
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div className="flex-1">
-                  <h4 className="font-semibold text-foreground">{savoir.contributor.name}</h4>
-                  <p className="text-sm text-foreground/70">{savoir.contributor.role}</p>
+                  <h4 className="font-semibold text-foreground">
+                    {savoir.contributor.name}
+                  </h4>
+                  <p className="text-sm text-foreground/70">
+                    {savoir.contributor.role}
+                  </p>
                 </div>
               </div>
-              <Button size="sm" variant="outline" className="w-full bg-transparent">
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full bg-transparent"
+              >
                 Voir le profil
               </Button>
             </Card>
 
             {/* Associated Knowledge */}
             <Card className="p-6 space-y-4">
-              <h3 className="font-semibold text-foreground">Savoirs Associés</h3>
+              <h3 className="font-semibold text-foreground">
+                Savoirs Associés
+              </h3>
               <ul className="space-y-3">
                 {savoir.associatedKnowledge.map((item: any) => (
                   <li key={item.id}>
@@ -245,11 +298,17 @@ export default async function DetailPage({ params }: PageProps) {
 
             {/* CTA */}
             <Card className="p-6 bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 space-y-4">
-              <h3 className="font-semibold text-foreground">Vous aussi, contribuez</h3>
+              <h3 className="font-semibold text-foreground">
+                Vous aussi, contribuez
+              </h3>
               <p className="text-sm text-foreground/70">
-                Partagez un savoir ancestral ou une technique oubliée avec notre communauté.
+                Partagez un savoir ancestral ou une technique oubliée avec notre
+                communauté.
               </p>
-              <Button size="sm" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button
+                size="sm"
+                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+              >
                 Ajouter un Savoir
               </Button>
             </Card>
@@ -264,5 +323,5 @@ export default async function DetailPage({ params }: PageProps) {
         </div>
       </footer>
     </div>
-  )
+  );
 }

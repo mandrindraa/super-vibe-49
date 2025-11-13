@@ -1,31 +1,38 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, MapPin, Globe, Award, TrendingUp, Share2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import BadgeShowcase from "@/app/components/badge-showcase"
+import BadgeShowcase from "@/components/badge-showcase";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  ArrowLeft,
+  Award,
+  Globe,
+  MapPin,
+  Share2,
+  TrendingUp,
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 interface ProfilePageProps {
   params: {
-    username: string
-  }
+    username: string;
+  };
 }
 
 interface Contributor {
-  username: string
-  name: string
-  bio: string
-  region: string
-  website?: string
-  avatar: string
-  joinedDate: string
-  totalVotes: number
-  knowledgeCount: number
-  reputationScore: number
-  badges: string[]
-  publications: any[]
+  username: string;
+  name: string;
+  bio: string;
+  region: string;
+  website?: string;
+  avatar: string;
+  joinedDate: string;
+  totalVotes: number;
+  knowledgeCount: number;
+  reputationScore: number;
+  badges: string[];
+  publications: any[];
 }
 
 const contributors: Record<string, Contributor> = {
@@ -42,42 +49,100 @@ const contributors: Record<string, Contributor> = {
     reputationScore: 2450,
     badges: ["🌱", "🔥", "🌸", "💎"],
     publications: [
-      { id: "1", title: "Techniques de Semis Ancestrales", votes: 45, era: "XVIIIe siècle" },
-      { id: "6", title: "Calendrier Lunaire Agricole", votes: 32, era: "Antiquité" },
-      { id: "11", title: "Rotation des Cultures", votes: 28, era: "Renaissance" },
+      {
+        id: "1",
+        title: "Techniques de Semis Ancestrales",
+        votes: 45,
+        era: "XVIIIe siècle",
+      },
+      {
+        id: "6",
+        title: "Calendrier Lunaire Agricole",
+        votes: 32,
+        era: "Antiquité",
+      },
+      {
+        id: "11",
+        title: "Rotation des Cultures",
+        votes: 28,
+        era: "Renaissance",
+      },
     ],
   },
-}
+};
 
 export default function ProfilePage({ params }: ProfilePageProps) {
-  const contributor = contributors[params.username] || contributors["marie-dubois"]
-  const [isFollowing, setIsFollowing] = useState(false)
+  const contributor =
+    contributors[params.username] || contributors["marie-dubois"];
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const contributorBadges = [
-    { icon: "🌱", name: "Semeur de mémoire", description: "1er savoir publié", unlocked: true },
-    { icon: "🔥", name: "Porteur de flambeau", description: "+100 votes", unlocked: true },
-    { icon: "🌸", name: "Gardien du savoir", description: "5 savoirs +80%", unlocked: true },
+    {
+      icon: "🌱",
+      name: "Semeur de mémoire",
+      description: "1er savoir publié",
+      unlocked: true,
+    },
+    {
+      icon: "🔥",
+      name: "Porteur de flambeau",
+      description: "+100 votes",
+      unlocked: true,
+    },
+    {
+      icon: "🌸",
+      name: "Gardien du savoir",
+      description: "5 savoirs +80%",
+      unlocked: true,
+    },
     { icon: "💎", name: "Sage", description: "+500 votes", unlocked: true },
-    { icon: "🕊️", name: "Éclaireur", description: "Votes fréquents", unlocked: false },
-  ]
+    {
+      icon: "🕊️",
+      name: "Éclaireur",
+      description: "Votes fréquents",
+      unlocked: false,
+    },
+  ];
 
   const reputationTiers = [
     { min: 0, max: 100, label: "Apprenti", color: "from-blue-400 to-blue-600" },
-    { min: 100, max: 500, label: "Contributeur", color: "from-green-400 to-green-600" },
-    { min: 500, max: 1000, label: "Expert", color: "from-purple-400 to-purple-600" },
-    { min: 1000, max: 2500, label: "Maître", color: "from-yellow-400 to-yellow-600" },
-    { min: 2500, max: Number.POSITIVE_INFINITY, label: "Sage", color: "from-red-400 to-red-600" },
-  ]
+    {
+      min: 100,
+      max: 500,
+      label: "Contributeur",
+      color: "from-green-400 to-green-600",
+    },
+    {
+      min: 500,
+      max: 1000,
+      label: "Expert",
+      color: "from-purple-400 to-purple-600",
+    },
+    {
+      min: 1000,
+      max: 2500,
+      label: "Maître",
+      color: "from-yellow-400 to-yellow-600",
+    },
+    {
+      min: 2500,
+      max: Number.POSITIVE_INFINITY,
+      label: "Sage",
+      color: "from-red-400 to-red-600",
+    },
+  ];
 
   const getCurrentTier = () => {
     return (
       reputationTiers.find(
-        (tier) => contributor.reputationScore >= tier.min && contributor.reputationScore < tier.max,
+        (tier) =>
+          contributor.reputationScore >= tier.min &&
+          contributor.reputationScore < tier.max
       ) || reputationTiers[reputationTiers.length - 1]
-    )
-  }
+    );
+  };
 
-  const currentTier = getCurrentTier()
+  const currentTier = getCurrentTier();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -90,7 +155,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             <ArrowLeft className="w-5 h-5" />
             Retour
           </Link>
-          <h1 className="text-xl font-bold text-primary">Profil Contributeur</h1>
+          <h1 className="text-xl font-bold text-primary">
+            Profil Contributeur
+          </h1>
           <div className="w-12" /> {/* Spacer */}
         </div>
       </header>
@@ -109,7 +176,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             {/* Info */}
             <div className="flex-1 space-y-4">
               <div>
-                <h1 className="text-4xl font-bold text-foreground">{contributor.name}</h1>
+                <h1 className="text-4xl font-bold text-foreground">
+                  {contributor.name}
+                </h1>
                 <p className="text-foreground/60">@{contributor.username}</p>
               </div>
 
@@ -130,7 +199,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 )}
                 <div className="flex items-center gap-2">
                   <Award className="w-4 h-4" />
-                  Membre depuis {new Date(contributor.joinedDate).toLocaleDateString("fr-FR")}
+                  Membre depuis{" "}
+                  {new Date(contributor.joinedDate).toLocaleDateString("fr-FR")}
                 </div>
               </div>
 
@@ -138,7 +208,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               <div className="flex gap-3 pt-4">
                 <Button
                   onClick={() => setIsFollowing(!isFollowing)}
-                  className={`${isFollowing ? "bg-accent" : "bg-primary"} hover:opacity-90 text-primary-foreground transition-all`}
+                  className={`${
+                    isFollowing ? "bg-accent" : "bg-primary"
+                  } hover:opacity-90 text-primary-foreground transition-all`}
                 >
                   {isFollowing ? "Suivi" : "Suivre"}
                 </Button>
@@ -180,7 +252,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 <div className="w-full h-2 bg-muted dark:bg-white/10 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
-                    style={{ width: `${((contributor.reputationScore % 500) / 500) * 100}%` }}
+                    style={{
+                      width: `${
+                        ((contributor.reputationScore % 500) / 500) * 100
+                      }%`,
+                    }}
                   />
                 </div>
               </div>
@@ -193,16 +269,22 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-foreground/70">Savoirs Publiés</span>
-                <span className="font-bold text-lg text-primary">{contributor.knowledgeCount}</span>
+                <span className="font-bold text-lg text-primary">
+                  {contributor.knowledgeCount}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-foreground/70">Votes Reçus</span>
-                <span className="font-bold text-lg text-accent">{contributor.totalVotes}</span>
+                <span className="font-bold text-lg text-accent">
+                  {contributor.totalVotes}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-foreground/70">Moyenne par Savoir</span>
                 <span className="font-bold text-lg text-primary">
-                  {Math.round(contributor.totalVotes / contributor.knowledgeCount)}
+                  {Math.round(
+                    contributor.totalVotes / contributor.knowledgeCount
+                  )}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -224,7 +306,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               ].map((item, idx) => (
                 <div key={idx} className="flex justify-between text-sm">
                   <span className="text-foreground/60">{item.date}</span>
-                  <span className="font-medium text-foreground">{item.action}</span>
+                  <span className="font-medium text-foreground">
+                    {item.action}
+                  </span>
                 </div>
               ))}
             </div>
@@ -256,9 +340,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     <div className="flex items-center justify-between pt-4 border-t border-primary/20 dark:border-white/10">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl">👍</span>
-                        <span className="font-bold text-foreground">{pub.votes}</span>
+                        <span className="font-bold text-foreground">
+                          {pub.votes}
+                        </span>
                       </div>
-                      <span className="text-xs text-foreground/60">Savoir #{pub.id}</span>
+                      <span className="text-xs text-foreground/60">
+                        Savoir #{pub.id}
+                      </span>
                     </div>
                   </div>
                 </Card>
@@ -268,5 +356,5 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </main>
     </div>
-  )
+  );
 }

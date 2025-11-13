@@ -1,5 +1,8 @@
 "use client";
 
+import { Footer } from "@/components/footer";
+import Header from "@/components/header";
+import Hero from "@/components/hero";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,8 +10,6 @@ import { ArrowRight, Leaf, Plus, Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Header from "./components/header";
-import Hero from "./components/hero";
 
 interface Savoir {
   id: string;
@@ -277,95 +278,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-primary dark:bg-slate-900 text-white py-6 md:py-8 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-6 mb-4">
-          <div>
-            <h4 className="font-semibold mb-3 text-white">Explorer</h4>
-            <ul className="space-y-1.5 text-sm text-white/80">
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Tous les savoirs
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Arbre interactif
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Catégories
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-3 text-white">Contribuer</h4>
-            <ul className="space-y-1.5 text-sm text-white/80">
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Ajouter un savoir
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Mes contributions
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Guide contributeur
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-3 text-white">Communauté</h4>
-            <ul className="space-y-1.5 text-sm text-white/80">
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Classement
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Discussions
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Événements
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-3 text-white">À propos</h4>
-            <ul className="space-y-1.5 text-sm text-white/80">
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  À propos
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Politique
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="border-t border-white/20 pt-2 md:pt-3 text-center">
-          <p className="text-xs text-white/70">
-            © 2025 L'Arche des Savoirs. Hackathon "Cultiver Demain"
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

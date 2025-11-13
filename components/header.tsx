@@ -1,7 +1,7 @@
 "use client";
 
+import ThemeToggle from "@/components/theme-toggle";
 import { Leaf } from "lucide-react";
-import ThemeToggle from "./theme-toggle";
 
 export default function Header() {
   return (
@@ -18,7 +18,6 @@ export default function Header() {
           {Object.entries({
             exploration: "Explorer",
             contribuer: "Contribuer",
-            apropos: "À propos",
           }).map((item) => (
             <a
               key={item[1]}

@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import NET from "vanta/dist/vanta.globe.min"; // You can replace this with any Vanta effect
+import NET from "vanta/dist/vanta.globe.min";
 
 export function VantaBackground() {
   const [vantaEffect, _] = useState<any>(null);

@@ -1,9 +1,9 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import type React from "react";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -41,14 +41,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={`font-sans antialiased ${_inter.className}`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <Providers>{children}</Providers>
 
         <Analytics />
       </body>
