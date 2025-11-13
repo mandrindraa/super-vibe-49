@@ -41,39 +41,39 @@
 }
 
 .dark {
-  /* Enhanced dark mode palette with better glass morphism support */
-  --background: oklch(0.11 0.01 120);
-  --foreground: oklch(0.95 0.01 70);
-  --card: oklch(0.16 0.02 120);
-  --card-foreground: oklch(0.95 0.01 70);
-  --popover: oklch(0.16 0.02 120);
-  --popover-foreground: oklch(0.95 0.01 70);
-  --primary: oklch(0.65 0.13 130);
-  --primary-foreground: oklch(0.11 0.01 120);
-  --secondary: oklch(0.78 0.11 65);
-  --secondary-foreground: oklch(0.11 0.01 120);
-  --muted: oklch(0.35 0.02 100);
-  --muted-foreground: oklch(0.7 0.02 80);
-  --accent: oklch(0.75 0.18 45);
-  --accent-foreground: oklch(0.11 0.01 120);
+  /* Enhanced dark mode colors with better contrast and visibility */
+  --background: oklch(0.08 0.01 120);
+  --foreground: oklch(0.98 0.01 70);
+  --card: oklch(0.13 0.02 120);
+  --card-foreground: oklch(0.98 0.01 70);
+  --popover: oklch(0.13 0.02 120);
+  --popover-foreground: oklch(0.98 0.01 70);
+  --primary: oklch(0.7 0.15 130);
+  --primary-foreground: oklch(0.08 0.01 120);
+  --secondary: oklch(0.82 0.12 65);
+  --secondary-foreground: oklch(0.08 0.01 120);
+  --muted: oklch(0.3 0.02 100);
+  --muted-foreground: oklch(0.75 0.02 80);
+  --accent: oklch(0.8 0.2 45);
+  --accent-foreground: oklch(0.08 0.01 120);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.35 0.02 100);
-  --input: oklch(0.2 0.01 110);
-  --ring: oklch(0.65 0.13 130);
-  --chart-1: oklch(0.65 0.13 130);
-  --chart-2: oklch(0.75 0.18 45);
-  --chart-3: oklch(0.78 0.11 65);
-  --chart-4: oklch(0.8 0.13 80);
-  --chart-5: oklch(0.7 0.1 110);
-  --sidebar: oklch(0.14 0.01 120);
-  --sidebar-foreground: oklch(0.95 0.01 70);
-  --sidebar-primary: oklch(0.65 0.13 130);
-  --sidebar-primary-foreground: oklch(0.95 0.01 70);
-  --sidebar-accent: oklch(0.75 0.18 45);
-  --sidebar-accent-foreground: oklch(0.11 0.01 120);
-  --sidebar-border: oklch(0.35 0.02 100);
-  --sidebar-ring: oklch(0.65 0.13 130);
+  --border: oklch(0.3 0.02 100);
+  --input: oklch(0.15 0.01 110);
+  --ring: oklch(0.7 0.15 130);
+  --chart-1: oklch(0.7 0.15 130);
+  --chart-2: oklch(0.8 0.2 45);
+  --chart-3: oklch(0.82 0.12 65);
+  --chart-4: oklch(0.85 0.15 80);
+  --chart-5: oklch(0.75 0.12 110);
+  --sidebar: oklch(0.11 0.01 120);
+  --sidebar-foreground: oklch(0.98 0.01 70);
+  --sidebar-primary: oklch(0.7 0.15 130);
+  --sidebar-primary-foreground: oklch(0.98 0.01 70);
+  --sidebar-accent: oklch(0.8 0.2 45);
+  --sidebar-accent-foreground: oklch(0.08 0.01 120);
+  --sidebar-border: oklch(0.3 0.02 100);
+  --sidebar-ring: oklch(0.7 0.15 130);
 }
 
 @theme inline {
@@ -133,13 +133,13 @@
 }
 
 @layer components {
-  /* Enhanced glass morphism with better dark mode support */
+  /* Enhanced glass morphism with better text color contrast */
   .glass {
-    @apply bg-white/30 backdrop-blur-md border border-white/20 shadow-lg;
+    @apply bg-white/30 backdrop-blur-md border border-white/20 shadow-lg text-foreground;
   }
 
   .dark .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/15 shadow-lg;
+    @apply bg-white/10 backdrop-blur-md border border-white/15 shadow-lg text-white;
   }
 
   .glass-dark {
@@ -413,6 +413,62 @@
 
   .animate-intro-text-fade {
     animation: intro-overlay-fade 1s ease-out forwards;
+  }
+
+  /* Add beige hover color transition for all text elements */
+  a {
+    @apply transition-colors duration-300;
+  }
+
+  a:hover {
+    color: oklch(0.88 0.08 65);
+  }
+
+  .dark a:hover {
+    color: oklch(0.88 0.08 65);
+  }
+
+  /* Enhanced footer styling with beige hover for all text */
+  footer {
+    background-color: var(--primary);
+  }
+
+  footer p,
+  footer a,
+  footer h4 {
+    color: white;
+  }
+
+  footer a:hover {
+    color: oklch(0.88 0.08 65);
+    @apply transition-colors duration-300;
+  }
+
+  footer ul li a {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  footer ul li a:hover {
+    color: oklch(0.88 0.08 65);
+    @apply transition-colors duration-300;
+  }
+
+  .dark footer {
+    background: linear-gradient(to right, oklch(0.08 0.01 120), oklch(0.1 0.01 120));
+  }
+
+  .dark footer p,
+  .dark footer h4 {
+    color: white;
+  }
+
+  .dark footer ul li a {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .dark footer ul li a:hover {
+    color: oklch(0.88 0.08 65);
+    @apply transition-colors duration-300;
   }
 
   html {
