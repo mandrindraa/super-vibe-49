@@ -125,7 +125,7 @@ export default function AddSavoirPage() {
         region: data!.region,
         tags,
         images: data.images || [],
-        published: data.published,
+        published: data.published || true,
       });
 
       setSubmitSuccess(true);
