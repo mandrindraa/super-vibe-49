@@ -55,7 +55,6 @@ export default function Hero({ isLoaded }: { isLoaded: boolean }) {
             <div className="relative w-[500px] h-[400px] pointer-events-auto perspective">
               <div className="absolute inset-0 shimmer opacity-30 rounded-2xl pointer-events-none"></div>
             </div>
-
             <div
               className="absolute top-1/3 left-0 w-48 h-48 glass dark:bg-white/5 rounded-full opacity-60 blur-2xl parallax-slow hover:opacity-80 transition-opacity duration-300"
               style={{ animationDelay: "1s" }}
