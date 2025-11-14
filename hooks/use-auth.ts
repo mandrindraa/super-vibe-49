@@ -1,7 +1,19 @@
-import getSupabase from "@/lib/supabase/client";
+"use client";
+
 import type { Session, User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
+
+// Dynamic import to avoid module loading issues
+let supabaseClient: any = null;
+
+const getSupabase = async () => {
+  if (!supabaseClient) {
+    const { default: client } = await import("@/lib/supabase/client");
+    supabaseClient = client();
+  }
+  return supabaseClient;
+};
 
 // ============================================
 // AUTH HOOKS
@@ -18,25 +30,40 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const supabase = getSupabase();
+    const fetchAuthData = async () => {
+      const supabase = await getSupabase();
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+      // Get initial session
+      const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
-    });
+    };
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    fetchAuthData();
+
+    const handleAuthStateChange = async (_event: any, session: Session | null) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
+    };
+
+    const listenForAuthChanges = async () => {
+      const supabase = await getSupabase();
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthStateChange);
+      return subscription;
+    };
+
+    let subscription: any = null;
+    listenForAuthChanges().then((sub: any) => {
+      subscription = sub;
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
   }, []);
 
   return { user, session, isLoading };
@@ -65,7 +92,7 @@ export function useSignUp() {
     setError(null);
 
     try {
-      const supabase = getSupabase();
+      const supabase = await getSupabase();
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -118,7 +145,7 @@ export function useSignIn() {
     setError(null);
 
     try {
-      const supabase = getSupabase();
+      const supabase = await getSupabase();
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -158,7 +185,7 @@ export function useSignInWithProvider() {
     setError(null);
 
     try {
-      const supabase = getSupabase();
+      const supabase = await getSupabase();
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -196,7 +223,7 @@ export function useSignOut() {
     setError(null);
 
     try {
-      const supabase = getSupabase();
+      const supabase = await getSupabase();
       const { error } = await supabase.auth.signOut();
 
       if (error) throw error;
@@ -229,7 +256,7 @@ export function useResetPassword() {
     setError(null);
 
     try {
-      const supabase = getSupabase();
+      const supabase = await getSupabase();
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/update-password`,
       });
@@ -261,7 +288,7 @@ export function useUpdatePassword() {
     setError(null);
 
     try {
-      const supabase = getSupabase();
+      const supabase = await getSupabase();
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
