@@ -26,25 +26,25 @@ export {
 } from "./use-savoirs";
 
 // Votes hooks
-export { useUserVote, useVote } from "./use-savoirs";
+export { useUserVote, useVote } from "./use-votes";
 
 // Comments hooks
-export { useComments, useCreateComment } from "./use-savoirs";
+export { useComments, useCreateComment } from "./use-comments";
 
 // Reactions hooks
-export { useReaction, useReactions } from "./use-savoirs";
+export { useReaction, useReactions } from "./use-reactions";
 
 // Favorites hooks
-export { useFavorites, useIsFavorite, useToggleFavorite } from "./use-savoirs";
+export { useFavorites, useIsFavorite, useToggleFavorite } from "./use-favorites";
 
 // Follow hooks
-export { useIsFollowing, useToggleFollow } from "./use-savoirs";
+export { useIsFollowing, useToggleFollow } from "./use-follow";
 
 // Profile hooks
-export { useCurrentUser, useProfile, useUpdateProfile } from "./use-savoirs";
+export { useCurrentUser, useProfile, useUpdateProfile } from "./use-profile";
 
 // Activities hooks
-export { useActivities } from "./use-savoirs";
+export { useActivities } from "./use-activities";
 
 // Search hooks
-export { useSearch } from "./use-savoirs";
+export { useSearch } from "./use-search";

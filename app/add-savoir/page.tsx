@@ -5,30 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateSavoir } from "@/hooks";
+import { useCreateSavoir, useAuth } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  AlertCircle,
-  ArrowLeft,
-  CheckCircle,
-  Eye,
-  Image as ImageIcon,
-  Leaf,
-  Loader2,
-  Save,
-} from "lucide-react";
-import { useSession } from "next-auth/react";
+import { AlertCircle, ArrowLeft, CheckCircle, Eye, ImageIcon, Leaf, Loader2, Save } from 'lucide-react';
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-
-// Import rich text editor dynamically to avoid SSR issues
-// const RichTextEditor = dynamic(() => import("@/components/rich-text-editor"), {
-//   ssr: false,
-//   loading: () => <div className="h-64 bg-muted animate-pulse rounded-lg" />,
-// });
 
 const CATEGORIES = [
   "Agriculture",
@@ -72,7 +56,7 @@ const savoirSchema = z.object({
 type SavoirFormData = z.infer<typeof savoirSchema>;
 
 export default function AddSavoirPage() {
-  const { data: session, status } = useSession();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const createSavoir = useCreateSavoir();
 
@@ -93,7 +77,7 @@ export default function AddSavoirPage() {
   });
 
   // Redirect if not authenticated
-  if (status === "loading") {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -101,7 +85,7 @@ export default function AddSavoirPage() {
     );
   }
 
-  if (status === "unauthenticated") {
+  if (!user) {
     router.push("/auth/login");
     return null;
   }
@@ -122,7 +106,7 @@ export default function AddSavoirPage() {
         content: data.content,
         category: data.category,
         era: data.era,
-        region: data!.region,
+        region: data.region,
         tags,
         images: data.images || [],
         published: data.published || true,
@@ -149,7 +133,7 @@ export default function AddSavoirPage() {
             <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+            <h2 className="text-2xl font-bold text-primary">
               Savoir publié avec succès !
             </h2>
             <p className="text-muted-foreground">
