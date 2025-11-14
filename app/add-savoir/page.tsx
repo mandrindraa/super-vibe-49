@@ -66,10 +66,7 @@ const savoirSchema = z.object({
   region: z.string().optional(),
   tags: z.string().optional(),
   images: z.array(z.string()).optional(),
-  published: z
-    .boolean()
-    .default(true)
-    .transform((v) => v ?? true),
+  published: z.boolean().optional().default(true),
 });
 
 type SavoirFormData = z.infer<typeof savoirSchema>;
