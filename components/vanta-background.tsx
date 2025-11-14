@@ -1,51 +1,38 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
-import NET from "vanta/dist/vanta.globe.min";
+import { useEffect, useState } from "react";
 
 export function VantaBackground() {
-  const [vantaEffect, _] = useState<any>(null);
-  const vantaRef = useRef<HTMLDivElement>(null);
+  const [isDark, setIsDark] = useState(false);
   const { theme, systemTheme } = useTheme();
-  const isDark =
-    theme === "dark" || (theme === "system" && systemTheme === "dark");
 
   useEffect(() => {
-    // Colors for light and dark modes
-    const lightBg = 0xf5f5f0; // Light beige background
-    const darkBg = 0x0f172a; // Dark background
-    const lightColor = 0xbc5a29; // Forest green for light mode
-    const darkColor = 0xf1e7d2;
+    const isDarkMode =
+      theme === "dark" || (theme === "system" && systemTheme === "dark");
+    setIsDark(isDarkMode);
+  }, [theme, systemTheme]);
 
-    const backgroundColor = isDark ? darkBg : lightBg;
-    const glColor = isDark ? darkColor : lightColor;
-
-    if (vantaEffect) {
-      vantaEffect.destroy();
-    }
-
-    if (vantaRef.current) {
-      NET({
-        el: vantaRef.current,
-        THREE,
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.0,
-        minWidth: 200.0,
-        scale: 1,
-        scaleMobile: 1,
-        color: glColor,
-        backgroundColor: backgroundColor,
-      });
-    }
-
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
-    };
-  }, [isDark, vantaEffect]);
-
-  return <div ref={vantaRef} className="absolute inset-0 -z-10" />;
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background dark:from-slate-950 dark:via-slate-900 dark:to-slate-950" />
+      
+      {/* Animated gradient orbs */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "6s", animationDelay: "2s" }} />
+      <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "8s", animationDelay: "4s" }} />
+      
+      {/* Subtle grid pattern */}
+      <div 
+        className="absolute inset-0 opacity-5 dark:opacity-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(0deg, transparent 24%, rgba(79, 39, 15, 0.05) 25%, rgba(79, 39, 15, 0.05) 26%, transparent 27%, transparent 74%, rgba(79, 39, 15, 0.05) 75%, rgba(79, 39, 15, 0.05) 76%, transparent 77%, transparent),
+            linear-gradient(90deg, transparent 24%, rgba(79, 39, 15, 0.05) 25%, rgba(79, 39, 15, 0.05) 26%, transparent 27%, transparent 74%, rgba(79, 39, 15, 0.05) 75%, rgba(79, 39, 15, 0.05) 76%, transparent 77%, transparent)
+          `,
+          backgroundSize: "50px 50px",
+        }}
+      />
+    </div>
+  );
 }

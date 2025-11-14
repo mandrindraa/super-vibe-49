@@ -34,7 +34,6 @@ export default function Hero({ isLoaded }: { isLoaded: boolean }) {
                 className="text-5xl md:text-7xl font-bold leading-tight fade-scale-in"
                 style={{ animationDelay: "0.3s" }}
               >
-                {/* <span className="gradient-text block">Cultiver Demain</span> */}
                 <AnimatedSubtitle className="text-foreground block mt-2" />
               </h2>
               <p
@@ -46,8 +45,6 @@ export default function Hero({ isLoaded }: { isLoaded: boolean }) {
                 plateforme où le passé rencontre l'innovation.
               </p>
             </div>
-
-            {/* Buttons moved out of the sliding container so they don't move during the heading/intro animation */}
           </div>
 
           <div
@@ -55,59 +52,14 @@ export default function Hero({ isLoaded }: { isLoaded: boolean }) {
               isLoaded ? "slide-in-right" : "opacity-0"
             }`}
           >
-            {/* Hero images with perspective and slight rotation for depth */}
             <div className="relative w-[500px] h-[400px] pointer-events-auto perspective">
-              {/* First image: slightly rotated left and offset up-left
-              <div
-                className="absolute rounded-2xl overflow-hidden glass hero-image parallax-on-scroll shadow-2xl"
-                data-depth="0.12"
-                style={{
-                  mixBlendMode: "multiply",
-                  opacity: 0.98,
-                  width: "380px",
-                  height: "320px",
-                  left: "-20px",
-                  top: "-30px",
-                  transform:
-                    "perspective(1200px) rotateY(-8deg) rotateX(4deg) translateZ(0px)",
-                }}
-              >
-                <img
-                  src="/ancient-farming-techniques-wheat-field.jpg?height=360&width=420"
-                  alt="Techniques de semis ancestrales"
-                  className="w-full h-full object-cover pointer-events-none"
-                />
-              </div> */}
-
-              {/* Second image: slightly rotated right and offset down-right */}
-              {/* <div
-                className="absolute rounded-2xl overflow-hidden glass hero-image parallax-on-scroll shadow-2xl"
-                data-depth="0.28"
-                style={{
-                  mixBlendMode: "screen",
-                  opacity: 0.95,
-                  width: "380px",
-                  height: "320px",
-                  right: "-20px",
-                  bottom: "-30px",
-                  transform:
-                    "perspective(1200px) rotateY(8deg) rotateX(-4deg) translateZ(20px)",
-                }}
-              >
-                <img
-                  src="/herbal-medicine-plants-garden.jpg?height=360&width=420"
-                  alt="Médecine des plantes"
-                  className="w-full h-full object-cover pointer-events-none"
-                />
-              </div> */}
+              <div className="absolute inset-0 shimmer opacity-30 rounded-2xl pointer-events-none"></div>
             </div>
 
             <div
               className="absolute top-1/3 left-0 w-48 h-48 glass dark:bg-white/5 rounded-full opacity-60 blur-2xl parallax-slow hover:opacity-80 transition-opacity duration-300"
               style={{ animationDelay: "1s" }}
             ></div>
-
-            <div className="absolute inset-0 shimmer opacity-30 rounded-2xl pointer-events-none"></div>
           </div>
         </div>
 
