@@ -1,7 +1,8 @@
 "use client";
 
+import { getBrowserClient } from "@/lib/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Dynamic import to avoid module loading issues
@@ -10,7 +11,7 @@ let supabaseClient: any = null;
 const getSupabase = async () => {
   if (!supabaseClient) {
     const { default: client } = await import("@/lib/supabase/client");
-    supabaseClient = client();
+    supabaseClient = getBrowserClient();
   }
   return supabaseClient;
 };
@@ -34,7 +35,9 @@ export function useAuth() {
       const supabase = await getSupabase();
 
       // Get initial session
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
@@ -42,7 +45,10 @@ export function useAuth() {
 
     fetchAuthData();
 
-    const handleAuthStateChange = async (_event: any, session: Session | null) => {
+    const handleAuthStateChange = async (
+      _event: any,
+      session: Session | null
+    ) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
@@ -50,7 +56,9 @@ export function useAuth() {
 
     const listenForAuthChanges = async () => {
       const supabase = await getSupabase();
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthStateChange);
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange(handleAuthStateChange);
       return subscription;
     };
 
