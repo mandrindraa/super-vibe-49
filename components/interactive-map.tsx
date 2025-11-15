@@ -100,7 +100,7 @@ export default function InteractiveMap({ onSelect }: InteractiveMapProps) {
     onSelect?.(location);
   };
 
-  export const getCategoryColor = (category: string) => {
+  const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
       Agriculture: "from-green-400 to-green-600",
       Alimentation: "from-orange-400 to-orange-600",
@@ -149,8 +149,8 @@ export default function InteractiveMap({ onSelect }: InteractiveMapProps) {
               key={location.id}
               className="absolute transition-all duration-300 cursor-pointer group"
               style={{
-                left: `${location.x}%`,
-                top: `${location.y}%`,
+                left: `${location.lat}%`,
+                top: `${location.lng}%`,
                 transform: "translate(-50%, -50%)",
               }}
               onMouseEnter={() => setHoveredId(location.id)}
