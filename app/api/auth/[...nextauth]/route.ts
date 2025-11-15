@@ -112,7 +112,7 @@ export const authOptions: NextAuthOptions = {
             const username =
               profile.email?.split("@")[0] +
               "-" +
-              Math.random().toString(36).substr(2, 5);
+              Math.random().toString(36).substring(2, 5);
 
             const { error: profileError } = await supabase
               .from("profiles")
