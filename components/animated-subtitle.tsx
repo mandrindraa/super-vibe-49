@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
 export function AnimatedSubtitle({ className }: { className?: string }) {
-  const colored = ["Cultiver Demain    ", "Honorer le passé   "];
-  const messages = [" en Préservant Hier", ", cultiver le futur"];
+  const messages = [
+    "Cultiver Demain en Préservant Hier",
+    "Honorer le passé, cultiver le futur",
+  ];
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
@@ -35,10 +37,7 @@ export function AnimatedSubtitle({ className }: { className?: string }) {
         minHeight: "1.5em",
       }}
     >
-      <span className="gradient-foreground block">
-        {colored[index]}
-        {messages[index]}
-      </span>
+      <span className="gradient-foreground block">{messages[index]}</span>
     </span>
   );
 }

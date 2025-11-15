@@ -1,12 +1,13 @@
 "use client";
 
-import ThemeToggle from "@/components/theme-toggle";
 import { Leaf } from "lucide-react";
+import ThemeToggle from "./theme-toggle";
 import UserMenu from "./user-menu";
 
+/* className="sticky top-0 z-50 glass dark:bg-white/8 dark:border-white/15 shadow-sm transition-all duration-500" */
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 glass dark:bg-white/8 dark:border-white/15 shadow-sm transition-all duration-500">
+    <header className="sticky top-0 z-50 glass overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5 dark:from-primary/5 dark:via-background dark:to-accent/5">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
           <Leaf className="w-8 h-8 text-primary animate-pulse" />
@@ -16,19 +17,6 @@ export default function Header() {
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
-          {/* {Object.entries({
-            exploration: "Explorer",
-            contribuer: "Contribuer",
-          }).map((item) => (
-            <a
-              key={item[1]}
-              href={`#${item[0].toLowerCase()}`}
-              className="text-foreground dark:text-white hover:text-accent transition-colors duration-300 relative group"
-            >
-              {item[1]}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary group-hover:w-full transition-all duration-300" />
-            </a>
-          ))} */}
           <UserMenu />
           <ThemeToggle />
         </nav>

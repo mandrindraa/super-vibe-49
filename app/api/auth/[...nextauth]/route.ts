@@ -1,4 +1,4 @@
-import { createServerClient } from "@/lib/supabase/client";
+import { getServerClient } from "@/utils/supabase/server";
 import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const supabase = createServerClient();
+          const supabase = await getServerClient();
 
           // Sign in with Supabase
           const { data, error } = await supabase.auth.signInWithPassword({
@@ -96,7 +96,7 @@ export const authOptions: NextAuthOptions = {
       }
 
       try {
-        const supabase = createServerClient();
+        const supabase = await getServerClient();
 
         // For OAuth providers, create/update profile
         if (account?.provider === "google" && profile) {
@@ -161,7 +161,7 @@ export const authOptions: NextAuthOptions = {
       // Get fresh user data on each request
       if (token.id) {
         try {
-          const supabase = createServerClient();
+          const supabase = await getServerClient();
           const { data: profile, error } = await supabase
             .from("profiles")
             .select("username, avatar_url, full_name, reputation_score")

@@ -1,4 +1,4 @@
-import { createServerClient } from "@/lib/supabase/client";
+import { getServerClient } from "@/utils/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { email, password, fullName } = validation.data;
-    const supabase = createServerClient();
+    const supabase = await getServerClient();
 
     // Check if user already exists
     const { data: existingUser } = await supabase.auth.admin.listUsers();

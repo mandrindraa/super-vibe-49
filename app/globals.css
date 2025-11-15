@@ -122,7 +122,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-transparent text-foreground;
   }
 
   /* Smooth scrolling for the whole site (respects user preference) */
@@ -145,13 +145,23 @@
 }
 
 @layer components {
-  /* Enhanced glass morphism with better text color contrast */
+  /* Enhanced glass morphism with better visibility */
   .glass {
-    @apply bg-white/30 backdrop-blur-md border border-white/20 shadow-lg text-foreground;
+    @apply bg-white/40 backdrop-blur-xl border border-white/30 shadow-lg text-foreground;
+    background-image: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
   }
 
   .dark .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/15 shadow-lg text-white;
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg text-white;
+    background-image: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
   }
 
   .glass-dark {

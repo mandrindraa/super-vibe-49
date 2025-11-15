@@ -3,6 +3,7 @@
 import BadgeShowcase from "@/components/badge-showcase";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { VantaBackground } from "@/components/vanta-background";
 import {
   ArrowLeft,
   Award,
@@ -145,8 +146,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const currentTier = getCurrentTier();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <header className="sticky top-0 z-50 glass dark:bg-white/5 dark:border-white/10 shadow-sm">
+    <div className="min-h-screen relative">
+      {/* Global background */}
+      <div className="fixed inset-0 -z-20">
+        <VantaBackground />
+      </div>
+
+      <header className="sticky top-0 z-50 glass shadow-sm">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <Link
             href="/"
@@ -158,13 +164,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <h1 className="text-xl font-bold text-primary">
             Profil Contributeur
           </h1>
-          <div className="w-12" /> {/* Spacer */}
+          <div className="w-12" />
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-12">
         {/* Profile Header */}
-        <div className="glass dark:bg-white/8 dark:border-white/15 rounded-lg p-8 md:p-12 mb-8">
+        <div className="glass rounded-lg p-8 md:p-12 mb-8">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-8">
             {/* Avatar */}
             <div
@@ -214,7 +220,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 >
                   {isFollowing ? "Suivi" : "Suivre"}
                 </Button>
-                <Button variant="outline" className="gap-2 bg-transparent">
+                <Button
+                  variant="outline"
+                  className="gap-2 glass border-primary/20"
+                >
                   <Share2 className="w-4 h-4" />
                   Partager
                 </Button>
@@ -226,7 +235,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         {/* Reputation Section */}
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Reputation Score */}
-          <div className="glass dark:bg-white/8 dark:border-white/15 rounded-lg p-6 space-y-4">
+          <div className="glass rounded-lg p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-foreground">Score de Réputation</h3>
               <TrendingUp className="w-5 h-5 text-accent" />
@@ -249,7 +258,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   <span>Vers le prochain niveau</span>
                   <span>{contributor.reputationScore % 500}/500</span>
                 </div>
-                <div className="w-full h-2 bg-muted dark:bg-white/10 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
                     style={{
@@ -264,7 +273,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
 
           {/* Stats */}
-          <div className="glass dark:bg-white/8 dark:border-white/15 rounded-lg p-6 space-y-4">
+          <div className="glass rounded-lg p-6 space-y-4">
             <h3 className="font-bold text-foreground">Statistiques</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
@@ -295,7 +304,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
 
           {/* Contribution Timeline */}
-          <div className="glass dark:bg-white/8 dark:border-white/15 rounded-lg p-6 space-y-4">
+          <div className="glass rounded-lg p-6 space-y-4">
             <h3 className="font-bold text-foreground">Activité</h3>
             <div className="space-y-3">
               {[
@@ -316,7 +325,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </div>
 
         {/* Badges Section */}
-        <div className="glass dark:bg-white/8 dark:border-white/15 rounded-lg p-8 mb-8">
+        <div className="glass rounded-lg p-8 mb-8">
           <BadgeShowcase badges={contributorBadges} />
         </div>
 
@@ -327,17 +336,17 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <div className="grid md:grid-cols-2 gap-6">
             {contributor.publications.map((pub: any) => (
               <Link key={pub.id} href={`/detail/${pub.id}`}>
-                <Card className="h-full cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 glass dark:bg-white/8 dark:border-white/10 overflow-hidden">
+                <Card className="h-full cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 glass overflow-hidden">
                   <div className="p-6 space-y-3">
                     <div className="flex justify-between items-start">
                       <h3 className="font-semibold text-foreground text-lg hover:text-primary transition-colors">
                         {pub.title}
                       </h3>
-                      <span className="text-xs bg-primary/10 dark:bg-primary/20 text-primary px-2 py-1 rounded">
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
                         {pub.era}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between pt-4 border-t border-primary/20 dark:border-white/10">
+                    <div className="flex items-center justify-between pt-4 border-t border-primary/20">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl">👍</span>
                         <span className="font-bold text-foreground">

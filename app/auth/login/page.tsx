@@ -3,56 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { VantaBackground } from "@/components/vanta-background";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
-// CSS for animations
-const animationStyles = `
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px) translateX(0px);
-    }
-    25% {
-      transform: translateY(-20px) translateX(10px);
-    }
-    50% {
-      transform: translateY(-40px) translateX(-10px);
-    }
-    75% {
-      transform: translateY(-20px) translateX(10px);
-    }
-  }
-
-  .google-button {
-    position: relative;
-    overflow: hidden;
-    color: hsl(var(--foreground));
-    transition: color 0.4s ease;
-    z-index: 0;
-  }
-
-  .google-button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: hsl(var(--primary));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-    z-index: -1;
-  }
-
-  .google-button:hover {
-    color: hsl(var(--background));
-  }
-
-  .google-button:hover::before {
-    transform: scaleX(1);
-  }
-`;
 
 type LoginForm = {
   email: string;
@@ -84,26 +40,28 @@ export default function LoginPage() {
     if (res?.error) {
       setError(res.error || "Erreur d'authentification");
     } else {
-      // successful login
       router.push("/");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background via-background to-muted px-4">
-      <style>{animationStyles}</style>
-      <Card className="max-w-3xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 p-6 relative overflow-hidden">
-        {/* Left decorative with animated background */}
+    <div className="min-h-screen flex items-center justify-center px-4 relative">
+      {/* Global background */}
+      <div className="fixed inset-0 -z-20">
+        <VantaBackground />
+      </div>
+
+      <Card className="max-w-3xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 p-6 glass shadow-2xl">
+        {/* Left decorative section */}
         <div className="hidden md:flex flex-col justify-center items-start gap-4 p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 rounded-lg relative overflow-hidden">
           {/* Animated background elements */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* Floating orbs */}
             <div
               className="absolute w-32 h-32 bg-primary/20 rounded-full blur-3xl animate-pulse"
               style={{
                 top: "10%",
                 left: "10%",
-                animation: "float 6s ease-in-out infinite",
+                animationDuration: "6s",
               }}
             />
             <div
@@ -111,15 +69,17 @@ export default function LoginPage() {
               style={{
                 bottom: "10%",
                 right: "10%",
-                animation: "float 8s ease-in-out infinite 1s",
+                animationDuration: "8s",
+                animationDelay: "1s",
               }}
             />
             <div
-              className="absolute w-28 h-28 bg-accent/20 rounded-full blur-3xl"
+              className="absolute w-28 h-28 bg-accent/20 rounded-full blur-3xl animate-pulse"
               style={{
                 top: "50%",
                 right: "20%",
-                animation: "float 7s ease-in-out infinite 2s",
+                animationDuration: "7s",
+                animationDelay: "2s",
               }}
             />
           </div>
@@ -130,31 +90,6 @@ export default function LoginPage() {
             <p className="text-muted-foreground">
               Connectez-vous pour partager et découvrir savoirs ancestraux.
             </p>
-          </div>
-
-          {/* Animated dots grid */}
-          <div className="absolute inset-0 opacity-30 z-0">
-            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern
-                  id="dots"
-                  x="20"
-                  y="20"
-                  width="20"
-                  height="20"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <circle
-                    cx="2"
-                    cy="2"
-                    r="1.5"
-                    fill="currentColor"
-                    className="text-primary/40"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#dots)" />
-            </svg>
           </div>
         </div>
 
@@ -176,6 +111,7 @@ export default function LoginPage() {
                 type="email"
                 placeholder="vous@exemple.com"
                 required
+                className="glass border-primary/20"
                 {...register("email")}
               />
             </div>
@@ -188,6 +124,7 @@ export default function LoginPage() {
                 type="password"
                 placeholder="Votre mot de passe"
                 required
+                className="glass border-primary/20"
                 {...register("password")}
               />
             </div>
@@ -215,7 +152,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 className={
-                  loading ? "w-full cursor-loading" : "cursor-pointer w-full"
+                  loading ? "w-full cursor-wait" : "cursor-pointer w-full"
                 }
                 disabled={loading}
               >
@@ -234,7 +171,7 @@ export default function LoginPage() {
             <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 variant="outline"
-                className="relative w-full flex items-center justify-center gap-3 overflow-hidden rounded-lg border border-input/70 px-4 py-2 cursor-pointer group"
+                className="relative w-full flex items-center justify-center gap-3 overflow-hidden rounded-lg glass border-primary/20 px-4 py-2 cursor-pointer group"
                 onClick={() => signIn("google")}
                 aria-label="Se connecter avec Google"
               >

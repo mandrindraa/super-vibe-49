@@ -5,9 +5,8 @@ import Header from "@/components/header";
 import Hero from "@/components/hero";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ArrowRight, Leaf, Plus, Search } from "lucide-react";
-import { useTheme } from "next-themes";
+import { VantaBackground } from "@/components/vanta-background";
+import { ArrowRight, Leaf, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -86,52 +85,47 @@ const recentSavoirs: Savoir[] = [
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { setTheme, theme } = useTheme();
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen relative">
+      {/* Global background for entire page */}
+      <div className="fixed inset-0 -z-20">
+        <VantaBackground />
+      </div>
+
       <Header />
       <Hero isLoaded={isLoaded} />
 
+      {/* Exploration Section */}
       <section
         id="exploration"
-        className="py-16 md:py-24 px-4 md:px-6 bg-background dark:bg-gradient-to-b dark:from-slate-950 dark:to-slate-900"
+        className="relative py-16 md:py-24 px-4 md:px-6 "
       >
         <div className="max-w-7xl mx-auto">
           <div className="mb-12 fade-scale-in">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2">
               Zone d'Exploration
             </h2>
-            <p className="text-foreground dark:text-white">
+            <p className="text-foreground">
               Parcourez notre collection de savoirs ancestraux
             </p>
-          </div>
-
-          <div
-            className="mb-10 relative fade-scale-in"
-            style={{ animationDelay: "0.1s" }}
-          >
-            <Search className="absolute left-4 top-3.5 w-5 h-5 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher un savoir... (agriculture, santé, artisanat...)"
-              className="pl-12 h-12 glass dark:bg-white/5 dark:border-white/10 dark:text-white dark:placeholder:text-white/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 hover:border-primary/50 transition-colors duration-300"
-            />
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {recentSavoirs.map((savoir, idx) => (
               <Link key={savoir.id} href={`/detail/${savoir.id}`}>
                 <Card
+                  // className={`h-full cursor-pointer hover:shadow-2xl transition-all duration-300 overflow-hidden hover:border-primary/50 hover:-translate-y-2 stagger-item glass text-foreground border-primary/20 ${
                   className={`h-full cursor-pointer hover:shadow-2xl dark:hover:shadow-slate-900/50 transition-all duration-300 overflow-hidden hover:border-primary/50 dark:border-white/10 hover:-translate-y-2 stagger-item glass dark:bg-white/8 dark:border-white/10 text-foreground dark:text-white ${
                     isLoaded ? "" : "opacity-0"
                   }`}
                   style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
                 >
-                  <div className="aspect-video bg-muted dark:bg-white/5 overflow-hidden relative">
+                  <div className="aspect-video bg-muted overflow-hidden relative">
                     <img
                       src={savoir.image || "/placeholder.svg"}
                       alt={savoir.title}
@@ -141,20 +135,20 @@ export default function Home() {
                   </div>
                   <div className="p-5 space-y-3">
                     <div className="flex gap-2 flex-wrap">
-                      <span className="inline-block bg-accent/20 dark:bg-accent/30 text-accent px-3 py-1 rounded-full text-sm font-medium hover:bg-accent/30 dark:hover:bg-accent/40 transition-colors">
+                      <span className="inline-block bg-accent/20 text-accent px-3 py-1 rounded-full text-sm font-medium hover:bg-accent/30 transition-colors">
                         {savoir.category}
                       </span>
-                      <span className="inline-block bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1 rounded-full text-sm hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
+                      <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm hover:bg-primary/20 transition-colors">
                         {savoir.era}
                       </span>
                     </div>
-                    <h3 className="font-semibold text-foreground dark:text-white text-lg line-clamp-2">
+                    <h3 className="font-semibold text-foreground text-lg line-clamp-2">
                       {savoir.title}
                     </h3>
-                    <p className="text-foreground dark:text-white text-sm line-clamp-2">
+                    <p className="text-foreground text-sm line-clamp-2">
                       {savoir.excerpt}
                     </p>
-                    <div className="text-xs text-foreground dark:text-white/70 pt-2">
+                    <div className="text-xs text-foreground/70 pt-2">
                       Par {savoir.contributor}
                     </div>
                   </div>
@@ -164,7 +158,9 @@ export default function Home() {
           </div>
 
           <div
-            className="glass dark:bg-white/8 dark:border-white/10 rounded-lg p-8 md:p-12 text-center fade-scale-in hover:border-primary/40 dark:hover:border-white/20 hover:shadow-lg transition-all duration-300 text-foreground dark:text-white"
+            className={`glass rounded-lg p-8 md:p-12 text-center fade-scale-in hover:border-primary/40 hover:shadow-lg transition-all duration-300 text-foreground border-primary/20 ${
+              isLoaded ? "" : "opacity-0"
+            }`}
             style={{ animationDelay: "0.8s" }}
           >
             <div className="relative inline-block mb-4">
@@ -176,22 +172,25 @@ export default function Home() {
             <h3 className="text-2xl md:text-3xl font-bold text-primary mb-3">
               Arbre des Savoirs Interactif
             </h3>
-            <p className="text-foreground dark:text-white mb-6 max-w-2xl mx-auto">
+            <p className="text-foreground mb-6 max-w-2xl mx-auto">
               Explorez une représentation visuelle de tous les savoirs connectés
               entre eux. Découvrez les liens historiques et thématiques qui les
               unissent.
             </p>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-              Accéder à l'Arbre des Savoirs
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <Link href="/explore">
+              <Button className="glass dark:text-white border-2 border-primary bg-background/50 backdrop-blur-sm text-primary hover:bg-primary hover:text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                Accéder à l'Arbre des Savoirs
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
+      {/* Contribution Section */}
       <section
         id="contribution"
-        className="py-16 md:py-24 px-4 md:px-6 bg-muted/30 dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950"
+        className="relative py-16 md:py-24 px-4 md:px-6"
       >
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-12 text-center fade-scale-in">
@@ -200,14 +199,14 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div
-              className={`glass dark:bg-white/8 dark:border-white/15 rounded-lg p-8 md:p-10 shadow-sm hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 text-foreground dark:text-white ${
+              className={`glass rounded-lg p-8 md:p-10 shadow-sm hover:shadow-lg transition-all duration-300 text-foreground border-primary/20 ${
                 isLoaded ? "slide-in-left" : "opacity-0"
               }`}
             >
               <h3 className="text-2xl md:text-3xl font-bold text-primary mb-4">
                 Partagez Vos Savoirs
               </h3>
-              <p className="text-foreground dark:text-white mb-8">
+              <p className="text-foreground mb-8">
                 Avez-vous des connaissances, techniques ou traditions à
                 transmettre ? Contribuez à L'Arche des Savoirs en partageant vos
                 découvertes.
@@ -236,28 +235,28 @@ export default function Home() {
                     className="flex gap-3 stagger-item"
                     style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
                   >
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 dark:bg-accent/30 flex items-center justify-center hover:bg-accent/40 dark:hover:bg-accent/50 transition-colors">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center hover:bg-accent/40 transition-colors">
                       <span className="text-accent font-bold">{step.num}</span>
                     </div>
                     <div>
-                      <p className="font-semibold text-foreground dark:text-white">
+                      <p className="font-semibold text-foreground">
                         {step.title}
                       </p>
-                      <p className="text-sm text-foreground dark:text-white/70">
-                        {step.desc}
-                      </p>
+                      <p className="text-sm text-foreground/70">{step.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <Button
-                size="lg"
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground hover:shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Ajouter un Savoir Oublié
-              </Button>
+              <Link href="/add-savoir">
+                <Button
+                  size="lg"
+                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground hover:shadow-lg transition-all duration-300 hover:scale-105"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Ajouter un Savoir Oublié
+                </Button>
+              </Link>
             </div>
 
             <div
@@ -265,13 +264,13 @@ export default function Home() {
                 isLoaded ? "slide-in-right" : "opacity-0"
               }`}
             >
-              <div className="absolute inset-0 glass dark:bg-white/8 dark:border-white/15 rounded-2xl overflow-hidden flex items-center justify-center shadow-xl glow-pulse hover:shadow-2xl hover:glow-pulse-active transition-all duration-300 group">
+              <div className="absolute inset-0 glass rounded-2xl overflow-hidden flex items-center justify-center shadow-xl glow-pulse hover:shadow-2xl hover:glow-pulse-active transition-all duration-300 group border-primary/20">
                 <img
                   src="/traditional-fabric-dyeing-natural-colors.jpg?height=384&width=448"
                   alt="Teinture naturelle"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-500 group-hover:brightness-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/50 dark:from-primary/70 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent"></div>
               </div>
             </div>
           </div>

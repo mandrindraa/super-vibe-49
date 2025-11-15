@@ -2,6 +2,7 @@ import CommentsSection from "@/components/comments-section";
 import ReactionsBar from "@/components/reactions-bar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { VantaBackground } from "@/components/vanta-background";
 import VotingSystem from "@/components/voting-system";
 import { ChevronLeft, Clock, Leaf, Share2, Tag, User } from "lucide-react";
 import Link from "next/link";
@@ -60,9 +61,14 @@ export default async function DetailPage({ params }: PageProps) {
   const savoir = savoirDetails[id] || savoirDetails["1"];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
+      {/* Global background */}
+      <div className="fixed inset-0 -z-20">
+        <VantaBackground />
+      </div>
+
       {/* Header Navigation */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-border shadow-sm">
+      <header className="sticky top-0 z-40 glass shadow-sm">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center gap-4">
           <Link
             href="/"
@@ -111,7 +117,7 @@ export default async function DetailPage({ params }: PageProps) {
             </div>
 
             {/* Meta Information */}
-            <div className="border-t border-b border-border py-6 flex flex-wrap gap-6">
+            <div className="glass border-y py-6 flex flex-wrap gap-6">
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-muted-foreground" />
                 <div>
@@ -211,7 +217,7 @@ export default async function DetailPage({ params }: PageProps) {
             </article>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 pt-4 border-t border-border">
+            <div className="flex flex-wrap gap-2 pt-4 glass border-t">
               {savoir.tags.map((tag: string) => (
                 <Link key={tag} href={`/?tag=${tag}`}>
                   <span className="inline-flex items-center gap-2 bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-full text-sm transition cursor-pointer">
@@ -223,7 +229,7 @@ export default async function DetailPage({ params }: PageProps) {
             </div>
 
             {/* Voting System */}
-            <div className="pt-6 border-t border-border">
+            <div className="pt-6 glass border-t">
               <VotingSystem knowledgeId={savoir.id} initialVotes={45} />
             </div>
 
@@ -234,7 +240,7 @@ export default async function DetailPage({ params }: PageProps) {
             <CommentsSection knowledgeId={savoir.id} />
 
             {/* Share */}
-            <div className="pt-6 border-t border-border flex gap-3">
+            <div className="pt-6 glass border-t flex gap-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -249,7 +255,7 @@ export default async function DetailPage({ params }: PageProps) {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Contributor Card */}
-            <Card className="p-6 space-y-4">
+            <Card className="glass p-6 space-y-4">
               <h3 className="font-semibold text-foreground">
                 À propos du contributeur
               </h3>
@@ -278,7 +284,7 @@ export default async function DetailPage({ params }: PageProps) {
             </Card>
 
             {/* Associated Knowledge */}
-            <Card className="p-6 space-y-4">
+            <Card className="glass p-6 space-y-4">
               <h3 className="font-semibold text-foreground">
                 Savoirs Associés
               </h3>
@@ -297,7 +303,7 @@ export default async function DetailPage({ params }: PageProps) {
             </Card>
 
             {/* CTA */}
-            <Card className="p-6 bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 space-y-4">
+            <Card className="glass p-6 bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 space-y-4">
               <h3 className="font-semibold text-foreground">
                 Vous aussi, contribuez
               </h3>
@@ -305,12 +311,14 @@ export default async function DetailPage({ params }: PageProps) {
                 Partagez un savoir ancestral ou une technique oubliée avec notre
                 communauté.
               </p>
-              <Button
-                size="sm"
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-              >
-                Ajouter un Savoir
-              </Button>
+              <Link href="/add-savoir">
+                <Button
+                  size="sm"
+                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                >
+                  Ajouter un Savoir
+                </Button>
+              </Link>
             </Card>
           </div>
         </div>

@@ -1,45 +1,78 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Trophy, Flame, Star, Zap, Target, CheckCircle } from "lucide-react"
-import { Card } from "@/components/ui/card"
+import { Card } from "@/components/ui/card";
+import { VantaBackground } from "@/components/vanta-background";
+import { CheckCircle, Flame, Star, Target, Trophy, Zap } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 interface Contributor {
-  rank: number
-  name: string
-  username: string
-  reputation: number
-  savoirs: number
-  streak: number
-  badge: string
+  rank: number;
+  name: string;
+  username: string;
+  reputation: number;
+  savoirs: number;
+  streak: number;
+  badge: string;
 }
 
 interface Quest {
-  id: string
-  title: string
-  description: string
-  icon: string
-  progress: number
-  reward: number
-  difficulty: "facile" | "moyen" | "difficile"
-  completed: boolean
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  progress: number;
+  reward: number;
+  difficulty: "facile" | "moyen" | "difficile";
+  completed: boolean;
 }
 
 interface Achievement {
-  id: string
-  icon: string
-  title: string
-  description: string
-  rarity: "commun" | "rare" | "épique" | "légendaire"
-  unlocked: boolean
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  rarity: "commun" | "rare" | "épique" | "légendaire";
+  unlocked: boolean;
 }
 
 const leaderboardData: Contributor[] = [
-  { rank: 1, name: "Marie Dubois", username: "marie-dubois", reputation: 2450, savoirs: 8, streak: 15, badge: "🌸" },
-  { rank: 2, name: "Jean Leclerc", username: "jean-leclerc", reputation: 1980, savoirs: 6, streak: 12, badge: "🔥" },
-  { rank: 3, name: "Sophie Martin", username: "sophie-martin", reputation: 1650, savoirs: 5, streak: 8, badge: "🔥" },
-  { rank: 4, name: "Pierre Bernard", username: "pierre-bernard", reputation: 1420, savoirs: 4, streak: 6, badge: "🌱" },
+  {
+    rank: 1,
+    name: "Marie Dubois",
+    username: "marie-dubois",
+    reputation: 2450,
+    savoirs: 8,
+    streak: 15,
+    badge: "🌸",
+  },
+  {
+    rank: 2,
+    name: "Jean Leclerc",
+    username: "jean-leclerc",
+    reputation: 1980,
+    savoirs: 6,
+    streak: 12,
+    badge: "🔥",
+  },
+  {
+    rank: 3,
+    name: "Sophie Martin",
+    username: "sophie-martin",
+    reputation: 1650,
+    savoirs: 5,
+    streak: 8,
+    badge: "🔥",
+  },
+  {
+    rank: 4,
+    name: "Pierre Bernard",
+    username: "pierre-bernard",
+    reputation: 1420,
+    savoirs: 4,
+    streak: 6,
+    badge: "🌱",
+  },
   {
     rank: 5,
     name: "Isabelle Rousseau",
@@ -49,7 +82,7 @@ const leaderboardData: Contributor[] = [
     streak: 5,
     badge: "🌱",
   },
-]
+];
 
 const questsData: Quest[] = [
   {
@@ -102,7 +135,7 @@ const questsData: Quest[] = [
     difficulty: "difficile",
     completed: false,
   },
-]
+];
 
 const achievementsData: Achievement[] = [
   {
@@ -153,16 +186,26 @@ const achievementsData: Achievement[] = [
     rarity: "légendaire",
     unlocked: false,
   },
-]
+];
 
 export default function GamificationPage() {
-  const [activeTab, setActiveTab] = useState<"leaderboard" | "quests" | "achievements">("leaderboard")
+  const [activeTab, setActiveTab] = useState<
+    "leaderboard" | "quests" | "achievements"
+  >("leaderboard");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <header className="sticky top-0 z-50 glass dark:bg-white/5 dark:border-white/10 shadow-sm">
+    <div className="min-h-screen relative">
+      {/* Global background */}
+      <div className="fixed inset-0 -z-20">
+        <VantaBackground />
+      </div>
+
+      <header className="sticky top-0 z-50 glass shadow-sm">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-primary hover:scale-105 transition-transform duration-300">
+          <Link
+            href="/"
+            className="text-primary hover:scale-105 transition-transform duration-300"
+          >
             L'Arche des Savoirs
           </Link>
           <h1 className="text-2xl font-bold text-primary">Gamification</h1>
@@ -173,10 +216,12 @@ export default function GamificationPage() {
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-12">
         {/* Header Section */}
         <div className="mb-12 space-y-4">
-          <h2 className="text-4xl font-bold gradient-text">Défiez-vous et Explorez</h2>
+          <h2 className="text-4xl font-bold gradient-text">
+            Défiez-vous et Explorez
+          </h2>
           <p className="text-lg text-foreground/70 max-w-2xl">
-            Participez à la communauté, débloquez des badges, et grimpez les classements en partageant vos savoirs
-            ancestraux.
+            Participez à la communauté, débloquez des badges, et grimpez les
+            classements en partageant vos savoirs ancestraux.
           </p>
         </div>
 
@@ -187,7 +232,7 @@ export default function GamificationPage() {
             { id: "quests", label: "Quêtes", icon: Target },
             { id: "achievements", label: "Accomplissements", icon: Star },
           ].map((tab) => {
-            const Icon = tab.icon
+            const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
@@ -195,13 +240,13 @@ export default function GamificationPage() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 font-semibold whitespace-nowrap ${
                   activeTab === tab.id
                     ? "bg-primary text-primary-foreground shadow-lg"
-                    : "glass dark:bg-white/5 dark:border-white/10 text-foreground hover:bg-primary/10"
+                    : "glass text-foreground hover:bg-primary/10"
                 }`}
               >
                 <Icon className="w-4 h-4" />
                 {tab.label}
               </button>
-            )
+            );
           })}
         </div>
 
@@ -212,7 +257,7 @@ export default function GamificationPage() {
               <Link
                 key={contributor.rank}
                 href={`/profile/${contributor.username}`}
-                className="glass dark:bg-white/8 dark:border-white/15 p-4 rounded-lg hover:shadow-lg transition-all duration-300 group"
+                className="glass p-4 rounded-lg hover:shadow-lg transition-all duration-300 group"
               >
                 <div className="flex items-center gap-4">
                   {/* Rank */}
@@ -223,14 +268,18 @@ export default function GamificationPage() {
                           contributor.rank === 1
                             ? "bg-gradient-to-br from-yellow-400 to-yellow-600"
                             : contributor.rank === 2
-                              ? "bg-gradient-to-br from-gray-300 to-gray-500"
-                              : "bg-gradient-to-br from-orange-400 to-orange-600"
+                            ? "bg-gradient-to-br from-gray-300 to-gray-500"
+                            : "bg-gradient-to-br from-orange-400 to-orange-600"
                         }`}
                       >
-                        {contributor.rank === 1 ? "🥇" : contributor.rank === 2 ? "🥈" : "🥉"}
+                        {contributor.rank === 1
+                          ? "🥇"
+                          : contributor.rank === 2
+                          ? "🥈"
+                          : "🥉"}
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted dark:bg-white/10 font-bold text-foreground">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted font-bold text-foreground">
                         #{contributor.rank}
                       </div>
                     )}
@@ -244,23 +293,31 @@ export default function GamificationPage() {
                       </h3>
                       <span className="text-2xl">{contributor.badge}</span>
                     </div>
-                    <p className="text-sm text-foreground/60">@{contributor.username}</p>
+                    <p className="text-sm text-foreground/60">
+                      @{contributor.username}
+                    </p>
                   </div>
 
                   {/* Stats */}
                   <div className="flex gap-6 text-right">
                     <div>
-                      <p className="text-2xl font-bold text-primary">{contributor.reputation}</p>
+                      <p className="text-2xl font-bold text-primary">
+                        {contributor.reputation}
+                      </p>
                       <p className="text-xs text-foreground/60">Points</p>
                     </div>
                     <div>
-                      <p className="text-2xl font-bold text-accent">{contributor.savoirs}</p>
+                      <p className="text-2xl font-bold text-accent">
+                        {contributor.savoirs}
+                      </p>
                       <p className="text-xs text-foreground/60">Savoirs</p>
                     </div>
                     {contributor.streak > 0 && (
                       <div className="flex items-center gap-1 bg-red-500/20 px-3 py-1 rounded-lg">
                         <Flame className="w-4 h-4 text-red-500" />
-                        <span className="font-bold text-red-500">{contributor.streak}</span>
+                        <span className="font-bold text-red-500">
+                          {contributor.streak}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -276,23 +333,27 @@ export default function GamificationPage() {
             {questsData.map((quest) => (
               <Card
                 key={quest.id}
-                className="glass dark:bg-white/8 dark:border-white/15 p-6 space-y-4 hover:shadow-lg transition-all duration-300"
+                className="glass p-6 space-y-4 hover:shadow-lg transition-all duration-300"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div className="text-4xl">{quest.icon}</div>
                     <div>
-                      <h3 className="font-bold text-foreground">{quest.title}</h3>
-                      <p className="text-sm text-foreground/70">{quest.description}</p>
+                      <h3 className="font-bold text-foreground">
+                        {quest.title}
+                      </h3>
+                      <p className="text-sm text-foreground/70">
+                        {quest.description}
+                      </p>
                     </div>
                   </div>
                   <span
                     className={`text-xs font-semibold px-2 py-1 rounded-full ${
                       quest.difficulty === "facile"
-                        ? "bg-green-500/20 text-green-600 dark:text-green-400"
+                        ? "bg-green-500/20 text-green-600"
                         : quest.difficulty === "moyen"
-                          ? "bg-yellow-500/20 text-yellow-600 dark:text-yellow-400"
-                          : "bg-red-500/20 text-red-600 dark:text-red-400"
+                        ? "bg-yellow-500/20 text-yellow-600"
+                        : "bg-red-500/20 text-red-600"
                     }`}
                   >
                     {quest.difficulty}
@@ -303,9 +364,11 @@ export default function GamificationPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground/70">Progression</span>
-                    <span className="font-bold text-foreground">{quest.progress}%</span>
+                    <span className="font-bold text-foreground">
+                      {quest.progress}%
+                    </span>
                   </div>
-                  <div className="w-full h-2 bg-muted dark:bg-white/10 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
                       style={{ width: `${quest.progress}%` }}
@@ -314,12 +377,16 @@ export default function GamificationPage() {
                 </div>
 
                 {/* Reward */}
-                <div className="flex items-center justify-between pt-4 border-t border-primary/20 dark:border-white/10">
+                <div className="flex items-center justify-between pt-4 glass border-t border-primary/20">
                   <div className="flex items-center gap-2">
                     <Zap className="w-4 h-4 text-yellow-500" />
-                    <span className="font-bold text-yellow-600 dark:text-yellow-400">{quest.reward} points</span>
+                    <span className="font-bold text-yellow-600">
+                      {quest.reward} points
+                    </span>
                   </div>
-                  {quest.completed && <CheckCircle className="w-5 h-5 text-green-500" />}
+                  {quest.completed && (
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                  )}
                 </div>
               </Card>
             ))}
@@ -330,37 +397,51 @@ export default function GamificationPage() {
         {activeTab === "achievements" && (
           <div className="space-y-6">
             {["commun", "rare", "épique", "légendaire"].map((rarity) => {
-              const rarityAchievements = achievementsData.filter((a) => a.rarity === rarity)
+              const rarityAchievements = achievementsData.filter(
+                (a) => a.rarity === rarity
+              );
               return (
                 <div key={rarity} className="space-y-3">
                   <h3 className="text-lg font-bold text-foreground capitalize flex items-center gap-2">
                     <span className="text-2xl">
-                      {rarity === "commun" ? "⚪" : rarity === "rare" ? "🔵" : rarity === "épique" ? "🟣" : "🟡"}
+                      {rarity === "commun"
+                        ? "⚪"
+                        : rarity === "rare"
+                        ? "🔵"
+                        : rarity === "épique"
+                        ? "🟣"
+                        : "🟡"}
                     </span>
                     {rarity === "commun"
                       ? "Commun"
                       : rarity === "rare"
-                        ? "Rare"
-                        : rarity === "épique"
-                          ? "Épique"
-                          : "Légendaire"}
+                      ? "Rare"
+                      : rarity === "épique"
+                      ? "Épique"
+                      : "Légendaire"}
                   </h3>
 
                   <div className="grid md:grid-cols-3 gap-4">
                     {rarityAchievements.map((achievement) => (
                       <Card
                         key={achievement.id}
-                        className={`glass dark:bg-white/8 dark:border-white/15 p-6 text-center space-y-3 transition-all duration-300 ${
-                          achievement.unlocked ? "hover:shadow-lg" : "opacity-50"
+                        className={`glass p-6 text-center space-y-3 transition-all duration-300 ${
+                          achievement.unlocked
+                            ? "hover:shadow-lg"
+                            : "opacity-50"
                         }`}
                       >
                         <div className="text-5xl">{achievement.icon}</div>
                         <div>
-                          <h4 className="font-bold text-foreground">{achievement.title}</h4>
-                          <p className="text-sm text-foreground/70">{achievement.description}</p>
+                          <h4 className="font-bold text-foreground">
+                            {achievement.title}
+                          </h4>
+                          <p className="text-sm text-foreground/70">
+                            {achievement.description}
+                          </p>
                         </div>
                         {achievement.unlocked && (
-                          <div className="text-xs font-semibold text-green-600 dark:text-green-400 pt-2 border-t border-primary/20 dark:border-white/10">
+                          <div className="text-xs font-semibold text-green-600 pt-2 glass border-t border-primary/20">
                             Débloqué
                           </div>
                         )}
@@ -368,11 +449,11 @@ export default function GamificationPage() {
                     ))}
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         )}
       </main>
     </div>
-  )
+  );
 }

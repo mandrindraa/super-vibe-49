@@ -1,7 +1,8 @@
 "use client";
 
-import InteractiveMap from "@/components/interactive-map";
+import { VantaBackground } from "@/components/vanta-background";
 import { ArrowLeft, Leaf } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -16,13 +17,22 @@ interface KnowledgeLocation {
   contributor: string;
 }
 
+const Map = dynamic(() => import("@/components/map"), {
+  ssr: false,
+});
+
 export default function ExplorePage() {
   const [selectedLocation, setSelectedLocation] =
     useState<KnowledgeLocation | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <header className="sticky top-0 z-50 glass dark:bg-white/5 dark:border-white/10 shadow-sm">
+    <div className="min-h-screen relative">
+      {/* Global background */}
+      <div className="fixed inset-0 -z-20">
+        <VantaBackground />
+      </div>
+
+      <header className="sticky top-0 z-50 glass shadow-sm">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <Link
             href="/"
@@ -53,11 +63,11 @@ export default function ExplorePage() {
 
           {/* Interactive Map */}
           <div className="fade-scale-in" style={{ animationDelay: "0.1s" }}>
-            <InteractiveMap onSelect={setSelectedLocation} />
+            <Map posix={[-18.8792, 47.5079]} />
           </div>
 
           {/* Instructions */}
-          <div className="glass dark:bg-white/8 dark:border-white/15 p-6 rounded-lg text-center text-foreground/80">
+          <div className="glass p-6 rounded-lg text-center text-foreground/80">
             <p>
               Cliquez sur un point pour découvrir les détails. Utilisez les
               boutons zoom pour explorer différentes régions.
