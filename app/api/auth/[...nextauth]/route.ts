@@ -98,26 +98,104 @@ export const authOptions: NextAuthOptions = {
       try {
         const supabase = await getServerClient();
 
-        // For OAuth providers, create/update profile
+        // For OAuth providers (Google), handle both signup and login
         if (account?.provider === "google" && profile) {
-          // Check if user exists in Supabase profiles
-          const { data: existingProfile } = await supabase
-            .from("profiles")
-            .select("id")
-            .eq("id", user.id)
-            .single();
+          // First, try to sign in with Supabase OAuth to get or create the user
+          const { data: oauthData, error: oauthError } =
+            await supabase.auth.signInWithOAuth({
+              provider: "google",
+              options: {
+                skipBrowserRedirect: true,
+                queryParams: {
+                  access_type: "offline",
+                  prompt: "consent",
+                },
+              },
+            });
 
-          if (!existingProfile) {
-            // Create profile for OAuth user
+          // Alternative: Check if user exists by email
+          const { data: existingAuthUser } =
+            await supabase.auth.admin.listUsers();
+          const supabaseUser = existingAuthUser?.users.find(
+            (u) => u.email === user.email
+          );
+
+          if (supabaseUser) {
+            // Existing user - use their UUID
+            user.id = supabaseUser.id;
+
+            // Check if profile exists
+            const { data: existingProfile } = await supabase
+              .from("profiles")
+              .select("id")
+              .eq("id", supabaseUser.id)
+              .single();
+
+            if (!existingProfile) {
+              // Create profile with Supabase UUID
+              const username =
+                user.email.split("@")[0] +
+                "-" +
+                Math.random().toString(36).substring(2, 5);
+
+              const { error: profileError } = await supabase
+                .from("profiles")
+                .insert({
+                  id: supabaseUser.id,
+                  username,
+                  full_name: profile.name || user.email.split("@")[0],
+                  avatar_url: user.image || null,
+                });
+
+              if (profileError) {
+                console.error("Error creating profile:", profileError);
+                return false;
+              }
+            } else {
+              // Update existing profile with latest OAuth data
+              const { error: updateError } = await supabase
+                .from("profiles")
+                .update({
+                  avatar_url: user.image || null,
+                  full_name: profile.name || user.name || undefined,
+                })
+                .eq("id", supabaseUser.id);
+
+              if (updateError) {
+                console.error("Error updating profile:", updateError);
+              }
+            }
+          } else {
+            // New user - create in Supabase Auth first to get a proper UUID
+            const { data: newAuthUser, error: createAuthError } =
+              await supabase.auth.admin.createUser({
+                email: user.email,
+                email_confirm: true,
+                user_metadata: {
+                  name: profile.name,
+                  avatar_url: user.image,
+                  provider: "google",
+                },
+              });
+
+            if (createAuthError || !newAuthUser.user) {
+              console.error("Error creating auth user:", createAuthError);
+              return false;
+            }
+
+            // Use the new Supabase UUID
+            user.id = newAuthUser.user.id;
+
+            // Create profile with the Supabase UUID
             const username =
-              profile.email?.split("@")[0] +
+              user.email.split("@")[0] +
               "-" +
               Math.random().toString(36).substring(2, 5);
 
             const { error: profileError } = await supabase
               .from("profiles")
               .insert({
-                id: user.id,
+                id: newAuthUser.user.id,
                 username,
                 full_name: profile.name || user.email.split("@")[0],
                 avatar_url: user.image || null,
@@ -125,20 +203,9 @@ export const authOptions: NextAuthOptions = {
 
             if (profileError) {
               console.error("Error creating profile:", profileError);
+              // Clean up auth user if profile creation fails
+              await supabase.auth.admin.deleteUser(newAuthUser.user.id);
               return false;
-            }
-          } else {
-            // Update existing profile with latest OAuth data
-            const { error: updateError } = await supabase
-              .from("profiles")
-              .update({
-                avatar_url: user.image || null,
-                full_name: profile.name || user.name || undefined,
-              })
-              .eq("id", user.id);
-
-            if (updateError) {
-              console.error("Error updating profile:", updateError);
             }
           }
         }

@@ -247,69 +247,73 @@ export default function GamificationPage() {
               <Link
                 key={contributor.rank}
                 href={`/profile/${contributor.username}`}
-                className="glass p-4 rounded-lg hover:shadow-lg transition-all duration-300 group"
+                className="block"
               >
-                <div className="flex items-center gap-4">
-                  {/* Rank */}
-                  <div className="flex-shrink-0">
-                    {contributor.rank <= 3 ? (
-                      <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl ${
-                          contributor.rank === 1
-                            ? "bg-gradient-to-br from-yellow-400 to-yellow-600"
+                <div className="glass rounded-lg p-4 hover:shadow-lg transition-all duration-300 group">
+                  <div className="flex items-center gap-4">
+                    {/* Rank */}
+                    <div className="flex-shrink-0">
+                      {contributor.rank <= 3 ? (
+                        <div
+                          className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl ${
+                            contributor.rank === 1
+                              ? "bg-gradient-to-br from-yellow-400 to-yellow-600"
+                              : contributor.rank === 2
+                              ? "bg-gradient-to-br from-gray-300 to-gray-500"
+                              : "bg-gradient-to-br from-orange-400 to-orange-600"
+                          }`}
+                        >
+                          {contributor.rank === 1
+                            ? "🥇"
                             : contributor.rank === 2
-                            ? "bg-gradient-to-br from-gray-300 to-gray-500"
-                            : "bg-gradient-to-br from-orange-400 to-orange-600"
-                        }`}
-                      >
-                        {contributor.rank === 1
-                          ? "🥇"
-                          : contributor.rank === 2
-                          ? "🥈"
-                          : "🥉"}
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted font-bold text-foreground">
-                        #{contributor.rank}
-                      </div>
-                    )}
-                  </div>
+                            ? "🥈"
+                            : "🥉"}
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted font-bold text-foreground">
+                          #{contributor.rank}
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">
-                        {contributor.name}
-                      </h3>
-                      <span className="text-2xl">{contributor.badge}</span>
-                    </div>
-                    <p className="text-sm text-foreground/60">
-                      @{contributor.username}
-                    </p>
-                  </div>
-
-                  {/* Stats */}
-                  <div className="flex gap-6 text-right">
-                    <div>
-                      <p className="text-2xl font-bold text-primary">
-                        {contributor.reputation}
-                      </p>
-                      <p className="text-xs text-foreground/60">Points</p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-accent">
-                        {contributor.savoirs}
-                      </p>
-                      <p className="text-xs text-foreground/60">Savoirs</p>
-                    </div>
-                    {contributor.streak > 0 && (
-                      <div className="flex items-center gap-1 bg-red-500/20 px-3 py-1 rounded-lg">
-                        <Flame className="w-4 h-4 text-red-500" />
-                        <span className="font-bold text-red-500">
-                          {contributor.streak}
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                          {contributor.name}
+                        </h3>
+                        <span className="text-2xl flex-shrink-0">
+                          {contributor.badge}
                         </span>
                       </div>
-                    )}
+                      <p className="text-sm text-foreground/60 truncate">
+                        @{contributor.username}
+                      </p>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex gap-4 md:gap-6 text-right flex-shrink-0">
+                      <div>
+                        <p className="text-xl md:text-2xl font-bold text-primary">
+                          {contributor.reputation}
+                        </p>
+                        <p className="text-xs text-foreground/60">Points</p>
+                      </div>
+                      <div>
+                        <p className="text-xl md:text-2xl font-bold text-accent">
+                          {contributor.savoirs}
+                        </p>
+                        <p className="text-xs text-foreground/60">Savoirs</p>
+                      </div>
+                      {contributor.streak > 0 && (
+                        <div className="flex items-center gap-1 bg-red-500/20 px-2 md:px-3 py-1 rounded-lg">
+                          <Flame className="w-4 h-4 text-red-500" />
+                          <span className="font-bold text-red-500">
+                            {contributor.streak}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Link>

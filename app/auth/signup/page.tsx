@@ -10,56 +10,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-// CSS for animations
-const animationStyles = `
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px) translateX(0px);
-    }
-    25% {
-      transform: translateY(-20px) translateX(10px);
-    }
-    50% {
-      transform: translateY(-40px) translateX(-10px);
-    }
-    75% {
-      transform: translateY(-20px) translateX(10px);
-    }
-  }
-
-  .google-button {
-    position: relative;
-    overflow: hidden;
-    color: hsl(var(--foreground));
-    transition: color 0.4s ease;
-    z-index: 0;
-  }
-
-  .google-button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: hsl(var(--primary));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-    z-index: -1;
-  }
-
-  .google-button:hover {
-    color: hsl(var(--background));
-  }
-
-  .google-button:hover::before {
-    transform: scaleX(1);
-  }
-`;
-
 type SignUpForm = {
+  fullName: string;
   email: string;
   password: string;
   confirmation: string;
-  remember?: boolean;
 };
 
 export default function SignUp() {
@@ -67,27 +22,56 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit } = useForm<SignUpForm>({
-    defaultValues: { remember: true },
-  });
+  const { register, handleSubmit, watch } = useForm<SignUpForm>();
 
   const onSubmit = async (data: SignUpForm) => {
     setError(null);
     setLoading(true);
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
+    // Validate password confirmation
+    if (data.password !== data.confirmation) {
+      setError("Les mots de passe ne correspondent pas");
+      setLoading(false);
+      return;
+    }
 
-    setLoading(false);
+    try {
+      // Call signup API
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          fullName: data.fullName,
+        }),
+      });
 
-    if (res?.error) {
-      setError(res.error || "Erreur d'authentification");
-    } else {
-      // successful login
-      router.push("/");
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Erreur lors de l'inscription");
+      }
+
+      // Auto-login after successful signup
+      const signInResult = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (signInResult?.error) {
+        setError(
+          "Compte créé, mais erreur de connexion. Veuillez vous connecter manuellement."
+        );
+      } else {
+        router.push("/");
+        router.refresh();
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -101,8 +85,6 @@ export default function SignUp() {
         <div className="hidden md:flex flex-col justify-center items-start gap-4 p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 rounded-lg relative overflow-hidden">
           {/* Animated background elements */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* Floating orbs */}
-
             <div
               className="absolute w-32 h-32 bg-primary/20 rounded-full blur-3xl animate-pulse"
               style={{
@@ -131,9 +113,12 @@ export default function SignUp() {
 
           {/* Content */}
           <div className="relative z-10">
-            <h2 className="text-2xl font-bold text-foreground">Bienvenue</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              Rejoignez-nous
+            </h2>
             <p className="text-muted-foreground">
-              Inscrivez-vous pour partager et découvrir les savoirs ancestraux.
+              Créez votre compte pour partager et découvrir les savoirs
+              ancestraux.
             </p>
           </div>
 
@@ -169,10 +154,22 @@ export default function SignUp() {
             Créer votre compte
           </h1>
           <p className="text-sm text-muted-foreground mb-6">
-            Entrez votre email et mot de passe pour continuer
+            Remplissez les informations ci-dessous
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <label className="text-sm text-foreground mb-1 block">
+                Nom complet
+              </label>
+              <Input
+                type="text"
+                placeholder="Jean Dupont"
+                required
+                {...register("fullName")}
+              />
+            </div>
+
             <div>
               <label className="text-sm text-foreground mb-1 block">
                 Email
@@ -191,15 +188,16 @@ export default function SignUp() {
               </label>
               <Input
                 type="password"
-                placeholder="Votre mot de passe"
+                placeholder="Au moins 6 caractères"
                 required
+                minLength={6}
                 {...register("password")}
               />
             </div>
-            {/** Confirm */}
+
             <div>
               <label className="text-sm text-foreground mb-1 block">
-                Confirmer votre mot de passe
+                Confirmer le mot de passe
               </label>
               <Input
                 type="password"
@@ -210,17 +208,9 @@ export default function SignUp() {
             </div>
 
             <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  className="accent-primary"
-                  {...register("remember")}
-                />
-                Se souvenir de moi
-              </label>
               <Link
                 href="/auth/login"
-                className="cursor-pointer text-primary underline"
+                className="cursor-pointer text-primary underline hover:text-primary/80"
               >
                 Déjà inscrit ?
               </Link>
@@ -231,12 +221,12 @@ export default function SignUp() {
             <div className="flex items-center gap-3 justify-end">
               <Button
                 type="submit"
-                className={
-                  loading ? "w-full cursor-loading" : "cursor-pointer w-full"
-                }
+                className={`w-full ${
+                  loading ? "cursor-wait" : "cursor-pointer"
+                }`}
                 disabled={loading}
               >
-                {loading ? "Connexion..." : "S'inscrire"}
+                {loading ? "Création du compte..." : "S'inscrire"}
               </Button>
             </div>
           </form>
@@ -252,8 +242,8 @@ export default function SignUp() {
               <Button
                 variant="outline"
                 className="relative w-full flex items-center justify-center gap-3 overflow-hidden rounded-lg border border-input/70 px-4 py-2 cursor-pointer group"
-                onClick={() => signIn("google")}
-                aria-label="Se connecter avec Google"
+                onClick={() => signIn("google", { callbackUrl: "/" })}
+                aria-label="S'inscrire avec Google"
               >
                 {/* Background hover effect */}
                 <span className="absolute inset-0 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
@@ -282,7 +272,7 @@ export default function SignUp() {
                       d="M272 109.6c39.9-.6 78 14.4 106.9 41.5l80.2-80.2C405.9 24.6 343.9 0 272 0 167.7 0 75.6 61.1 30.4 154.3l87.5 70.8C139.6 157.9 200.4 109.6 272 109.6z"
                     />
                   </svg>
-                  <span className="font-medium">Continuer avec Google</span>
+                  <span className="font-medium">S'inscrire avec Google</span>
                 </span>
               </Button>
             </div>
