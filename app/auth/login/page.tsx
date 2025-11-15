@@ -51,9 +51,9 @@ export default function LoginPage() {
         <VantaBackground />
       </div>
 
-      <Card className="max-w-3xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 p-6 glass shadow-2xl">
+      <Card className="max-w-3xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 p-6 glass shadow-2xl glass">
         {/* Left decorative section */}
-        <div className="hidden md:flex flex-col justify-center items-start gap-4 p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 rounded-lg relative overflow-hidden">
+        <div className="md:flex flex-col justify-center items-start gap-4 p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 rounded-lg relative overflow-hidden">
           {/* Animated background elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div
@@ -90,6 +90,30 @@ export default function LoginPage() {
             <p className="text-muted-foreground">
               Connectez-vous pour partager et découvrir savoirs ancestraux.
             </p>
+          </div>
+          {/* Animated dots grid */}
+          <div className="absolute inset-0 opacity-30 z-0">
+            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern
+                  id="dots"
+                  x="20"
+                  y="20"
+                  width="20"
+                  height="20"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <circle
+                    cx="2"
+                    cy="2"
+                    r="1.5"
+                    fill="currentColor"
+                    className="text-primary/40"
+                  />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#dots)" />
+            </svg>
           </div>
         </div>
 

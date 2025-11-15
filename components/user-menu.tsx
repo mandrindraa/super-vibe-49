@@ -8,14 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  BookMarked,
-  Heart,
-  LogOut,
-  PlusCircle,
-  Settings,
-  User,
-} from "lucide-react";
+import { LogOut, PlusCircle, Settings, User } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -36,7 +29,10 @@ export default function UserMenu() {
           </Button>
         </Link>
         <Link href="/auth/signup">
-          <Button size="sm" className="bg-primary hover:bg-primary/90">
+          <Button
+            size="sm"
+            className="bg-primary hover:text-foreground/300 hover:bg-primary/90"
+          >
             Inscription
           </Button>
         </Link>
@@ -98,20 +94,6 @@ export default function UserMenu() {
             >
               <User className="w-4 h-4 mr-2" />
               Mon Profil
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem asChild>
-            <Link href="/favorites" className="cursor-pointer">
-              <Heart className="w-4 h-4 mr-2" />
-              Mes Favoris
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem asChild>
-            <Link href="/my-savoirs" className="cursor-pointer">
-              <BookMarked className="w-4 h-4 mr-2" />
-              Mes Savoirs
             </Link>
           </DropdownMenuItem>
 

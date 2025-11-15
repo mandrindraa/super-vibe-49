@@ -1,24 +1,14 @@
-"use client";
-
 import BadgeShowcase from "@/components/badge-showcase";
-import { Button } from "@/components/ui/button";
+import { SecondaryHeader } from "@/components/header-secondary";
 import { Card } from "@/components/ui/card";
 import { VantaBackground } from "@/components/vanta-background";
-import {
-  ArrowLeft,
-  Award,
-  Globe,
-  MapPin,
-  Share2,
-  TrendingUp,
-} from "lucide-react";
+import { Award, Globe, MapPin, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 }
 
 interface Contributor {
@@ -72,10 +62,10 @@ const contributors: Record<string, Contributor> = {
   },
 };
 
-export default function ProfilePage({ params }: ProfilePageProps) {
-  const contributor =
-    contributors[params.username] || contributors["marie-dubois"];
-  const [isFollowing, setIsFollowing] = useState(false);
+export default async function ProfilePage({ params }: ProfilePageProps) {
+  const { username } = await params;
+  const contributor = contributors[username] || contributors["marie-dubois"];
+  // const [isFollowing, setIsFollowing] = useState(false);
 
   const contributorBadges = [
     {
@@ -152,21 +142,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         <VantaBackground />
       </div>
 
-      <header className="sticky top-0 z-50 glass shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 hover:scale-105 transition-transform duration-300 text-primary"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Retour
-          </Link>
-          <h1 className="text-xl font-bold text-primary">
-            Profil Contributeur
-          </h1>
-          <div className="w-12" />
-        </div>
-      </header>
+      <SecondaryHeader text="Profil contributeur" />
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-12">
         {/* Profile Header */}
@@ -211,7 +187,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4">
+              {/* <div className="flex gap-3 pt-4">
                 <Button
                   onClick={() => setIsFollowing(!isFollowing)}
                   className={`${
@@ -227,7 +203,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   <Share2 className="w-4 h-4" />
                   Partager
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -336,7 +312,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <div className="grid md:grid-cols-2 gap-6">
             {contributor.publications.map((pub: any) => (
               <Link key={pub.id} href={`/detail/${pub.id}`}>
-                <Card className="h-full cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 glass overflow-hidden">
+                <Card className="h-full glass cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 glass overflow-hidden">
                   <div className="p-6 space-y-3">
                     <div className="flex justify-between items-start">
                       <h3 className="font-semibold text-foreground text-lg hover:text-primary transition-colors">

@@ -178,7 +178,7 @@ export default function Home() {
               unissent.
             </p>
             <Link href="/explore">
-              <Button className="glass dark:text-white border-2 border-primary bg-background/50 backdrop-blur-sm text-primary hover:bg-primary hover:text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+              <Button className="glass cursor-pointer dark:text-white border-2 border-primary bg-background/50 backdrop-blur-sm text-primary hover:bg-primary hover:text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                 Accéder à l'Arbre des Savoirs
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -251,7 +251,7 @@ export default function Home() {
               <Link href="/add-savoir">
                 <Button
                   size="lg"
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground hover:shadow-lg transition-all duration-300 hover:scale-105"
+                  className="w-full cursor-pointer bg-accent hover:bg-accent/90 text-accent-foreground hover:shadow-lg transition-all duration-300 hover:scale-105"
                 >
                   <Plus className="w-5 h-5 mr-2" />
                   Ajouter un Savoir Oublié

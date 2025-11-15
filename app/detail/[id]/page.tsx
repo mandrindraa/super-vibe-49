@@ -1,10 +1,10 @@
 import CommentsSection from "@/components/comments-section";
-import ReactionsBar from "@/components/reactions-bar";
+import { SecondaryHeader } from "@/components/header-secondary";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { VantaBackground } from "@/components/vanta-background";
 import VotingSystem from "@/components/voting-system";
-import { ChevronLeft, Clock, Leaf, Share2, Tag, User } from "lucide-react";
+import { Clock, Tag, User } from "lucide-react";
 import Link from "next/link";
 
 interface PageProps {
@@ -21,6 +21,7 @@ const savoirDetails: Record<string, any> = {
     era: "XVIIIe siècle",
     date: "15 novembre 2024",
     contributor: {
+      id: 1,
       name: "Marie Dubois",
       role: "Historienne et Agricultrice",
       avatar: "/professional-woman-portrait.png",
@@ -68,23 +69,7 @@ export default async function DetailPage({ params }: PageProps) {
       </div>
 
       {/* Header Navigation */}
-      <header className="sticky top-0 z-40 glass shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center gap-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-primary hover:text-primary/80 transition"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            <span>Retour</span>
-          </Link>
-          <div className="flex-1 flex items-center gap-2 md:ml-8">
-            <Leaf className="w-6 h-6 text-primary" />
-            <h1 className="text-xl font-bold text-primary">
-              L'Arche des Savoirs
-            </h1>
-          </div>
-        </div>
-      </header>
+      <SecondaryHeader text="L' Arche des Savoirs" />
 
       {/* Hero Image */}
       <div className="relative h-96 md:h-[500px] overflow-hidden bg-muted">
@@ -117,7 +102,7 @@ export default async function DetailPage({ params }: PageProps) {
             </div>
 
             {/* Meta Information */}
-            <div className="glass border-y py-6 flex flex-wrap gap-6">
+            <div className="glass p-6 flex flex-wrap gap-6">
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-muted-foreground" />
                 <div>
@@ -217,7 +202,7 @@ export default async function DetailPage({ params }: PageProps) {
             </article>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 pt-4 glass border-t">
+            <div className="flex flex-wrap gap-2 pt-4 p-6 border-t">
               {savoir.tags.map((tag: string) => (
                 <Link key={tag} href={`/?tag=${tag}`}>
                   <span className="inline-flex items-center gap-2 bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-full text-sm transition cursor-pointer">
@@ -229,18 +214,18 @@ export default async function DetailPage({ params }: PageProps) {
             </div>
 
             {/* Voting System */}
-            <div className="pt-6 glass border-t">
+            <div className="pt-6 border-t">
               <VotingSystem knowledgeId={savoir.id} initialVotes={45} />
             </div>
 
             {/* Reactions Bar */}
-            <ReactionsBar />
+            {/* <ReactionsBar /> */}
 
             {/* Comments Section */}
             <CommentsSection knowledgeId={savoir.id} />
 
             {/* Share */}
-            <div className="pt-6 glass border-t flex gap-3">
+            {/* <div className="pt-6 border-t flex gap-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -249,7 +234,7 @@ export default async function DetailPage({ params }: PageProps) {
                 <Share2 className="w-4 h-4" />
                 Partager
               </Button>
-            </div>
+            </div> */}
           </div>
 
           {/* Sidebar */}
@@ -274,13 +259,15 @@ export default async function DetailPage({ params }: PageProps) {
                   </p>
                 </div>
               </div>
-              <Button
-                size="sm"
-                variant="outline"
-                className="w-full bg-transparent"
-              >
-                Voir le profil
-              </Button>
+              <Link href={`/profile/${savoir.contributor.id}`}>
+                <Button
+                  size="sm"
+                  variant="default"
+                  className="w-full cursor-pointer"
+                >
+                  Voir le profil
+                </Button>
+              </Link>
             </Card>
 
             {/* Associated Knowledge */}
@@ -314,7 +301,7 @@ export default async function DetailPage({ params }: PageProps) {
               <Link href="/add-savoir">
                 <Button
                   size="sm"
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                  className="w-full cursor-pointer bg-accent hover:bg-accent/90 text-accent-foreground"
                 >
                   Ajouter un Savoir
                 </Button>
@@ -325,8 +312,8 @@ export default async function DetailPage({ params }: PageProps) {
       </div>
 
       {/* Footer */}
-      <footer className="bg-primary text-primary-foreground py-8 md:py-12 px-4 md:px-6 mt-16">
-        <div className="max-w-7xl mx-auto text-center">
+      <footer className="bg-primary text-primary-foreground py-2 md:py-6 px-2 md:px-3 mt-0">
+        <div className="max-w-2xl mx-auto text-center">
           <p>© 2025 L'Arche des Savoirs. Hackathon "Cultiver Demain"</p>
         </div>
       </footer>

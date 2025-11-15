@@ -1,10 +1,8 @@
 "use client";
 
+import { SecondaryHeader } from "@/components/header-secondary";
 import { VantaBackground } from "@/components/vanta-background";
-import { ArrowLeft, Leaf } from "lucide-react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useState } from "react";
 
 interface KnowledgeLocation {
   id: string;
@@ -22,9 +20,6 @@ const Map = dynamic(() => import("@/components/map"), {
 });
 
 export default function ExplorePage() {
-  const [selectedLocation, setSelectedLocation] =
-    useState<KnowledgeLocation | null>(null);
-
   return (
     <div className="min-h-screen relative">
       {/* Global background */}
@@ -32,21 +27,7 @@ export default function ExplorePage() {
         <VantaBackground />
       </div>
 
-      <header className="sticky top-0 z-50 glass shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 hover:scale-105 transition-transform duration-300"
-          >
-            <ArrowLeft className="w-5 h-5 text-primary" />
-            <Leaf className="w-6 h-6 text-primary" />
-          </Link>
-          <h1 className="text-2xl font-bold text-primary">
-            Arbre des Savoirs Interactif
-          </h1>
-          <div className="w-12" /> {/* Spacer for alignment */}
-        </div>
-      </header>
+      <SecondaryHeader text="Arbre des Savoirs Interactif" />
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-16">
         <div className="space-y-8">

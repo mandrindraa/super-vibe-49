@@ -1,5 +1,6 @@
 "use client";
 
+import { SecondaryHeader } from "@/components/header-secondary";
 import { Card } from "@/components/ui/card";
 import { VantaBackground } from "@/components/vanta-background";
 import { CheckCircle, Flame, Star, Target, Trophy, Zap } from "lucide-react";
@@ -200,18 +201,7 @@ export default function GamificationPage() {
         <VantaBackground />
       </div>
 
-      <header className="sticky top-0 z-50 glass shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-primary hover:scale-105 transition-transform duration-300"
-          >
-            L'Arche des Savoirs
-          </Link>
-          <h1 className="text-2xl font-bold text-primary">Gamification</h1>
-          <div className="w-12" /> {/* Spacer */}
-        </div>
-      </header>
+      <SecondaryHeader text="Quêtes et Progression" />
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-12">
         {/* Header Section */}
@@ -377,7 +367,7 @@ export default function GamificationPage() {
                 </div>
 
                 {/* Reward */}
-                <div className="flex items-center justify-between pt-4 glass border-t border-primary/20">
+                <div className="flex items-center justify-between p-4 glass border-t border-primary/20">
                   <div className="flex items-center gap-2">
                     <Zap className="w-4 h-4 text-yellow-500" />
                     <span className="font-bold text-yellow-600">
@@ -441,7 +431,7 @@ export default function GamificationPage() {
                           </p>
                         </div>
                         {achievement.unlocked && (
-                          <div className="text-xs font-semibold text-green-600 pt-2 glass border-t border-primary/20">
+                          <div className="text-xs font-semibold text-green-600 p-2 glass border-t border-primary/20">
                             Débloqué
                           </div>
                         )}

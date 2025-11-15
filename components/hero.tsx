@@ -114,16 +114,15 @@ export default function Hero({ isLoaded }: { isLoaded: boolean }) {
           >
             <div className="flex flex-col sm:flex-row gap-4 cursor-pointer">
               <Link href="#exploration">
-                <Button className="glass border-2 border-primary dark:text-white bg-background/10 dark:hover:text-foreground backdrop-blur-sm text-primary hover:bg-primary hover:text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                <Button className="glass p-6 cursor-pointer border-2 border-primary dark:text-white bg-background/10 dark:hover:text-foreground backdrop-blur-sm text-primary hover:bg-primary hover:text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                   Commencer l' exploration
-                  <ArrowDownRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowDownRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
             </div>
           </div>
         </div>
       </div>
-      {/* <VantaBackground /> */}
     </section>
   );
 }

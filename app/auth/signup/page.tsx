@@ -55,9 +55,10 @@ const animationStyles = `
   }
 `;
 
-type LoginForm = {
+type SignUpForm = {
   email: string;
   password: string;
+  confirmation: string;
   remember?: boolean;
 };
 
@@ -66,11 +67,11 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit } = useForm<LoginForm>({
+  const { register, handleSubmit } = useForm<SignUpForm>({
     defaultValues: { remember: true },
   });
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = async (data: SignUpForm) => {
     setError(null);
     setLoading(true);
 
@@ -91,7 +92,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background via-background to-muted px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="fixed inset-0 -z-20">
         <VantaBackground />
       </div>
@@ -101,37 +102,38 @@ export default function SignUp() {
           {/* Animated background elements */}
           <div className="absolute inset-0 overflow-hidden">
             {/* Floating orbs */}
-            {/* <div
+
+            <div
               className="absolute w-32 h-32 bg-primary/20 rounded-full blur-3xl animate-pulse"
               style={{
                 top: "10%",
                 left: "10%",
                 animation: "float 6s ease-in-out infinite",
               }}
-            /> */}
-            {/* <div
+            />
+            <div
               className="absolute w-40 h-40 bg-secondary/20 rounded-full blur-3xl animate-pulse"
               style={{
                 bottom: "10%",
                 right: "10%",
                 animation: "float 8s ease-in-out infinite 1s",
               }}
-            /> */}
-            {/* <div
+            />
+            <div
               className="absolute w-28 h-28 bg-accent/20 rounded-full blur-3xl"
               style={{
                 top: "50%",
                 right: "20%",
                 animation: "float 7s ease-in-out infinite 2s",
               }}
-            /> */}
+            />
           </div>
 
           {/* Content */}
           <div className="relative z-10">
             <h2 className="text-2xl font-bold text-foreground">Bienvenue</h2>
             <p className="text-muted-foreground">
-              Connectez-vous pour partager et découvrir savoirs ancestraux.
+              Inscrivez-vous pour partager et découvrir les savoirs ancestraux.
             </p>
           </div>
 
@@ -164,7 +166,7 @@ export default function SignUp() {
         {/* Form */}
         <div className="p-2 md:p-6">
           <h1 className="text-2xl font-semibold text-foreground mb-2">
-            S' Inscrire
+            Créer votre compte
           </h1>
           <p className="text-sm text-muted-foreground mb-6">
             Entrez votre email et mot de passe pour continuer
@@ -203,7 +205,7 @@ export default function SignUp() {
                 type="password"
                 placeholder="Confirmer le mot de passe"
                 required
-                {...register("password")}
+                {...register("confirmation")}
               />
             </div>
 
@@ -217,10 +219,10 @@ export default function SignUp() {
                 Se souvenir de moi
               </label>
               <Link
-                href="/auth/signup"
+                href="/auth/login"
                 className="cursor-pointer text-primary underline"
               >
-                Pas encore inscrit ?
+                Déjà inscrit ?
               </Link>
             </div>
 
@@ -234,7 +236,7 @@ export default function SignUp() {
                 }
                 disabled={loading}
               >
-                {loading ? "Connexion..." : "Se connecter"}
+                {loading ? "Connexion..." : "S'inscrire"}
               </Button>
             </div>
           </form>
@@ -280,7 +282,7 @@ export default function SignUp() {
                       d="M272 109.6c39.9-.6 78 14.4 106.9 41.5l80.2-80.2C405.9 24.6 343.9 0 272 0 167.7 0 75.6 61.1 30.4 154.3l87.5 70.8C139.6 157.9 200.4 109.6 272 109.6z"
                     />
                   </svg>
-                  <span className="font-medium">Se connecter avec Google</span>
+                  <span className="font-medium">Continuer avec Google</span>
                 </span>
               </Button>
             </div>
