@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { VantaBackground } from "@/components/vanta-background";
 import { useCreateSavoir } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -96,7 +97,10 @@ export default function AddSavoirPage() {
   // Show loading state while checking authentication
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center relative">
+        <div className="fixed inset-0 -z-20">
+          <VantaBackground />
+        </div>
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
@@ -144,7 +148,10 @@ export default function AddSavoirPage() {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4 relative">
+        <div className="fixed inset-0 -z-20">
+          <VantaBackground />
+        </div>
         <Card className="glass p-8 max-w-md w-full text-center space-y-6 shadow-xl animate-fade-scale-in">
           <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
             <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
@@ -163,7 +170,12 @@ export default function AddSavoirPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted">
+    <div className="min-h-screen relative">
+      {/* Global background */}
+      <div className="fixed inset-0 -z-20">
+        <VantaBackground />
+      </div>
+
       {/* Header */}
       <header className="sticky top-0 z-40 glass shadow-sm">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
@@ -182,7 +194,7 @@ export default function AddSavoirPage() {
               type="button"
               variant="outline"
               onClick={() => setPreview(!preview)}
-              className="gap-2"
+              className="gap-2 glass"
             >
               <Eye className="w-4 h-4" />
               {preview ? "Édition" : "Aperçu"}
