@@ -225,6 +225,12 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
       }
 
+      // For OAuth sign-ins, ensure we have the user ID
+      if (account?.provider === "google" && user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+
       // Get fresh user data on each request
       if (token.id) {
         try {

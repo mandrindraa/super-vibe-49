@@ -53,20 +53,21 @@ export default function SignUp() {
         throw new Error(result.error || "Erreur lors de l'inscription");
       }
 
-      // Auto-login after successful signup
+      // Auto-login after successful signup with credentials
       const signInResult = await signIn("credentials", {
         redirect: false,
         email: data.email,
         password: data.password,
       });
 
-      if (signInResult?.error) {
-        setError(
-          "Compte créé, mais erreur de connexion. Veuillez vous connecter manuellement."
-        );
-      } else {
+      if (signInResult?.ok) {
         router.push("/");
         router.refresh();
+      } else {
+        // If auto-login fails, redirect to login page
+        router.push(
+          "/auth/login?message=Compte créé avec succès. Veuillez vous connecter."
+        );
       }
     } catch (err: any) {
       setError(err.message);
@@ -241,9 +242,11 @@ export default function SignUp() {
             <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 variant="outline"
+                type="button"
                 className="relative w-full flex items-center justify-center gap-3 overflow-hidden rounded-lg border border-input/70 px-4 py-2 cursor-pointer group"
                 onClick={() => signIn("google", { callbackUrl: "/" })}
                 aria-label="S'inscrire avec Google"
+                disabled={loading}
               >
                 {/* Background hover effect */}
                 <span className="absolute inset-0 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
