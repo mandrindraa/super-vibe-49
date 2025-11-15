@@ -5,12 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateSavoir, useAuth } from "@/hooks";
+import { useCreateSavoir } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, ArrowLeft, CheckCircle, Eye, ImageIcon, Leaf, Loader2, Save } from 'lucide-react';
+import {
+  AlertCircle,
+  ArrowLeft,
+  CheckCircle,
+  Eye,
+  ImageIcon,
+  Leaf,
+  Loader2,
+  Save,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -56,7 +66,7 @@ const savoirSchema = z.object({
 type SavoirFormData = z.infer<typeof savoirSchema>;
 
 export default function AddSavoirPage() {
-  const { user, isLoading } = useAuth();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const createSavoir = useCreateSavoir();
 
@@ -77,7 +87,14 @@ export default function AddSavoirPage() {
   });
 
   // Redirect if not authenticated
-  if (isLoading) {
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/login");
+    }
+  }, [status, router]);
+
+  // Show loading state while checking authentication
+  if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -85,8 +102,8 @@ export default function AddSavoirPage() {
     );
   }
 
-  if (!user) {
-    router.push("/auth/login");
+  // Don't render anything if not authenticated (will redirect)
+  if (status === "unauthenticated") {
     return null;
   }
 
