@@ -196,7 +196,7 @@ export default function LoginPage() {
               <Button
                 variant="outline"
                 className="relative w-full flex items-center justify-center gap-3 overflow-hidden rounded-lg glass border-primary/20 px-4 py-2 cursor-pointer group"
-                onClick={() => signIn("google")}
+                onClick={() => signIn("google", {callbackUrl: "/"})}
                 aria-label="Se connecter avec Google"
               >
                 {/* Background hover effect */}
